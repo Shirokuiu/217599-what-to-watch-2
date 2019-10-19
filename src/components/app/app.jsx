@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import {MainPage} from "../main-page/main-page";
 
@@ -9,5 +9,7 @@ const filmsName = [
 ];
 
 export const App = () => {
-  return <MainPage filmsName={filmsName} />;
+  const showMovie = () => {};
+
+  return <MainPage filmsName={filmsName} showMovie={showMovie}/>;
 };

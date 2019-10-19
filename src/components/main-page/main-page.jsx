@@ -1,7 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-export const MainPage = ({filmsName}) => {
+export const MainPage = (props) => {
+  const {filmsName, showMovie} = props;
+
   return <React.Fragment>
     <section className="movie-card">
       <div className="movie-card__bg">
@@ -102,7 +104,7 @@ export const MainPage = ({filmsName}) => {
               <img src="img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175"/>
             </div>
             <h3 className="small-movie-card__title">
-              <a className="small-movie-card__link" href="movie-page.html">{name}</a>
+              <a className="small-movie-card__link" href="movie-page.html" onClick={showMovie}>{name}</a>
             </h3>
           </article>)}
         </div>
@@ -130,5 +132,6 @@ export const MainPage = ({filmsName}) => {
 };
 
 MainPage.propTypes = {
-  filmsName: PropTypes.arrayOf(PropTypes.string).isRequired
+  filmsName: PropTypes.arrayOf(PropTypes.string).isRequired,
+  showMovie: PropTypes.func
 };
