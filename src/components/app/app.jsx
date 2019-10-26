@@ -1,15 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-import {MainPage} from "../main-page/main-page";
+import MainPage from "../main-page/main-page";
 
-const filmsName = [
-  `Fantastic Beasts`,
-  `Bohemian Rhapsody`,
-  `Macbeth`
-];
+export const App = ({films}) => {
+  return <MainPage filmsMock={films}/>;
+};
 
-export const App = () => {
-  const showMovie = () => {};
-
-  return <MainPage filmsName={filmsName} showMovie={showMovie}/>;
+App.propTypes = {
+  films: PropTypes.array.isRequired
 };
