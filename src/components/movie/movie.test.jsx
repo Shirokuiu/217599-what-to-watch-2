@@ -12,7 +12,7 @@ it(`Is movie render`, () => {
       id={0}
       img={films[0].img}
       title={films[0].title}
-      onMovieEnter={jest.fn()}
+      onMovieClick={jest.fn()}
     />);
 
   expect(tree).toMatchSnapshot();

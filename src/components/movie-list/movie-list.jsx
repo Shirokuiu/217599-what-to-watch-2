@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {Movie} from "../movie/movie";
 
 export const MovieList = (props) => {
-  const {films, onMovieEnter} = props;
+  const {films, onMovieClick} = props;
 
   return <div className="catalog__movies-list">
     {films.map(({img, title}, idx) => (
@@ -13,16 +13,13 @@ export const MovieList = (props) => {
         id={idx}
         img={img}
         title={title}
-        onMovieEnter={onMovieEnter}
+        onMovieClick={onMovieClick}
       />
     ))}
   </div>;
 };
 
 MovieList.propTypes = {
-  films: PropTypes.arrayOf(PropTypes.exact({
-    img: PropTypes.string,
-    title: PropTypes.string
-  })).isRequired,
-  onMovieEnter: PropTypes.func
+  films: PropTypes.array,
+  onMovieClick: PropTypes.func
 };

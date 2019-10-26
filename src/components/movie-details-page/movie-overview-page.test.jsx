@@ -1,15 +1,14 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import {MovieList} from "./movie-list";
+import {MovieOverviewPage} from "./movie-overview-page";
 
 import {films} from "../../mocks/mocks";
 
-it(`Is movie list rendered`, () => {
+it(`Is movie overview page rendered`, () => {
   const tree = renderer
-    .create(<MovieList
-      films={films}
-      onMovieClick={jest.fn()}
+    .create(<MovieOverviewPage
+      movie={films[0]}
     />);
 
   expect(tree).toMatchSnapshot();

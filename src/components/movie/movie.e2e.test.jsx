@@ -4,18 +4,21 @@ import Adapter from "enzyme-adapter-react-16";
 
 import {Movie} from "./movie";
 
+import {films} from "../../mocks/mocks";
+
 Enzyme.configure({adapter: new Adapter()});
 
-it(`Get active movie id`, () => {
-  const onMovieEnter = jest.fn();
-  const props = {
-    id: 0,
-    onMovieEnter
-  };
+it(`Is movie has clicked`, () => {
+  const clickHandler = jest.fn();
+  const movie = shallow(<Movie
+    key={0}
+    id={0}
+    img={films[0].img}
+    title={films[0].title}
+    onMovieClick={clickHandler}
+  />);
 
-  const movie = shallow(<Movie {...props} />);
+  movie.simulate(`click`);
 
-  movie.simulate(`mouseenter`, {target: {id: 0}});
-
-  expect(onMovieEnter).toHaveBeenCalledWith(0);
+  expect(clickHandler).toHaveBeenCalled();
 });

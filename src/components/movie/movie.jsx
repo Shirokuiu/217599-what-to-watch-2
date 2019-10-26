@@ -2,18 +2,20 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export const Movie = (props) => {
-  const {img, title, id, onMovieEnter} = props;
+  const {img, title, id, onMovieClick} = props;
 
-  const movieEnterHandler = () => {
-    onMovieEnter(id);
+  const movieClickHandler = () => {
+    location.href = `/film-overview-${id}`;
+
+    onMovieClick();
   };
 
-  return <article className="small-movie-card catalog__movies-card" onMouseEnter={movieEnterHandler}>
+  return <article className="small-movie-card catalog__movies-card" onClick={movieClickHandler}>
     <div className="small-movie-card__image">
       <img src={img} alt="Bohemian Rhapsody" width="280" height="175"/>
     </div>
     <h3 className="small-movie-card__title">
-      <a className="small-movie-card__link" href="movie-page.html">{title}</a>
+      <a className="small-movie-card__link" href={`/film-overview-${id}`}>{title}</a>
     </h3>
   </article>;
 };
@@ -22,5 +24,5 @@ Movie.propTypes = {
   img: PropTypes.string,
   title: PropTypes.string,
   id: PropTypes.number,
-  onMovieEnter: PropTypes.func
+  onMovieClick: PropTypes.func
 };

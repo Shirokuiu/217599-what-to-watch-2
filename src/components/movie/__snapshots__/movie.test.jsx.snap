@@ -3,7 +3,7 @@
 exports[`Is movie render 1`] = `
 <article
   className="small-movie-card catalog__movies-card"
-  onMouseEnter={[Function]}
+  onClick={[Function]}
 >
   <div
     className="small-movie-card__image"
@@ -20,7 +20,7 @@ exports[`Is movie render 1`] = `
   >
     <a
       className="small-movie-card__link"
-      href="movie-page.html"
+      href="/film-overview-0"
     >
       Fantastic Beasts
     </a>
