@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {MovieList} from "../movie-list/movie-list";
 
 export const MainPage = (props) => {
-  const {filmsMock, onMovieClick} = props;
+  const {filmsMock} = props;
 
   return <React.Fragment>
     <section className="movie-card">
@@ -99,7 +99,7 @@ export const MainPage = (props) => {
           </li>
         </ul>
 
-        <MovieList films={filmsMock} onMovieClick={onMovieClick}/>
+        <MovieList films={filmsMock}/>
 
         <div className="catalog__more">
           <button className="catalog__button" type="button">Show more</button>
@@ -124,6 +124,5 @@ export const MainPage = (props) => {
 };
 
 MainPage.propTypes = {
-  filmsMock: PropTypes.array.isRequired,
-  onMovieClick: PropTypes.func
+  filmsMock: PropTypes.array.isRequired
 };

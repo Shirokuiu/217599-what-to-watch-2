@@ -31,7 +31,7 @@ export const MovieOverviewPage = (props) => {
 
         <div className="movie-card__wrap">
           <div className="movie-card__desc">
-            <h2 className="movie-card__title">The Grand Budapest Hotel</h2>
+            <h2 className="movie-card__title">{movie.title}</h2>
             <p className="movie-card__meta">
               <span className="movie-card__genre">Drama</span>
               <span className="movie-card__year">2014</span>
@@ -40,13 +40,13 @@ export const MovieOverviewPage = (props) => {
             <div className="movie-card__buttons">
               <button className="btn btn--play movie-card__button" type="button">
                 <svg viewBox="0 0 19 19" width="19" height="19">
-                  <use xlinkHref="#play-s"></use>
+                  <use xlinkHref="#play-s"/>
                 </svg>
                 <span>Play</span>
               </button>
               <button className="btn btn--list movie-card__button" type="button">
                 <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
+                  <use xlinkHref="#add"/>
                 </svg>
                 <span>My list</span>
               </button>
@@ -59,7 +59,7 @@ export const MovieOverviewPage = (props) => {
       <div className="movie-card__wrap movie-card__translate-top">
         <div className="movie-card__info">
           <div className="movie-card__poster movie-card__poster--big">
-            <img src={movie.img} alt={movie.title} width="218" height="327"/>
+            <img src={`img/${movie.img}`} alt={movie.title} width="218" height="327"/>
           </div>
 
           <div className="movie-card__desc">
@@ -164,7 +164,7 @@ export const MovieOverviewPage = (props) => {
 };
 
 MovieOverviewPage.propTypes = {
-  movie: PropTypes.exact({
+  movie: PropTypes.shape({
     img: PropTypes.string,
     title: PropTypes.string,
     rate: PropTypes.exact({
@@ -173,6 +173,7 @@ MovieOverviewPage.propTypes = {
     }).isRequired,
     description: PropTypes.string,
     director: PropTypes.string,
-    starrings: PropTypes.array
+    starrings: PropTypes.array,
+    preview: PropTypes.string
   })
 };

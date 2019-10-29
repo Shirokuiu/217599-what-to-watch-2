@@ -9,7 +9,6 @@ it(`Is movie list rendered`, () => {
   const tree = renderer
     .create(<MovieList
       films={films}
-      onMovieClick={jest.fn()}
     />);
 
   expect(tree).toMatchSnapshot();

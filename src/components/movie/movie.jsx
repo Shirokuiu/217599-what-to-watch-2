@@ -1,28 +1,75 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 
-export const Movie = (props) => {
-  const {img, title, id, onMovieClick} = props;
+import VideoPlayer from "../video-player/video-player";
 
-  const movieClickHandler = () => {
+export default class Movie extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isPlaying: false
+    };
+
+    this.timerId = null;
+    this.HOVER_DELAY = 1000;
+
+    this._handleMovieClick = this._handleMovieClick.bind(this);
+    this._handleMovieEnter = this._handleMovieEnter.bind(this);
+    this._handleMovieLeave = this._handleMovieLeave.bind(this);
+  }
+
+  _handleMovieClick() {
+    const {id} = this.props;
+
     location.href = `/film-overview-${id}`;
+  }
 
-    onMovieClick();
-  };
+  _handleMovieEnter() {
+    this.timerId = setTimeout(() => {
+      this.setState({isPlaying: true});
+    }, this.HOVER_DELAY);
+  }
 
-  return <article className="small-movie-card catalog__movies-card" onClick={movieClickHandler}>
-    <div className="small-movie-card__image">
-      <img src={img} alt="Bohemian Rhapsody" width="280" height="175"/>
-    </div>
-    <h3 className="small-movie-card__title">
-      <a className="small-movie-card__link" href={`/film-overview-${id}`}>{title}</a>
-    </h3>
-  </article>;
-};
+  _handleMovieLeave() {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+      this.setState({isPlaying: false});
+    }
+  }
+
+  render() {
+    const {film, id} = this.props;
+    const {img, title, preview} = film;
+
+    return <article
+      className="small-movie-card catalog__movies-card"
+      onClick={this._handleMovieClick}
+      onMouseEnter={this._handleMovieEnter}
+      onMouseLeave={this._handleMovieLeave}
+    >
+      <div className="small-movie-card__image">
+        <VideoPlayer
+          src={preview}
+          poster={`img/${img}`}
+          muted={true}
+          width={280}
+          height={175}
+          playerState={this.state}
+        />
+      </div>
+      <h3 className="small-movie-card__title">
+        <a className="small-movie-card__link" href={`/film-overview-${id}`}>{title}</a>
+      </h3>
+    </article>;
+  }
+}
 
 Movie.propTypes = {
-  img: PropTypes.string,
-  title: PropTypes.string,
-  id: PropTypes.number,
-  onMovieClick: PropTypes.func
+  film: PropTypes.shape({
+    img: PropTypes.string,
+    title: PropTypes.string,
+    preview: PropTypes.string
+  }).isRequired,
+  id: PropTypes.number
 };

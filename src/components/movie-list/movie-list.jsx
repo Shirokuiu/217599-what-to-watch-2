@@ -1,25 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {Movie} from "../movie/movie";
+import Movie from "../movie/movie";
 
 export const MovieList = (props) => {
-  const {films, onMovieClick} = props;
+  const {films} = props;
 
   return <div className="catalog__movies-list">
-    {films.map(({img, title}, idx) => (
+    {films.map((film, idx) => (
       <Movie
-        key={Math.random() + idx}
+        film={film}
         id={idx}
-        img={img}
-        title={title}
-        onMovieClick={onMovieClick}
+        key={Math.random() + idx}
       />
     ))}
   </div>;
 };
 
 MovieList.propTypes = {
-  films: PropTypes.array,
-  onMovieClick: PropTypes.func
+  films: PropTypes.array
 };
