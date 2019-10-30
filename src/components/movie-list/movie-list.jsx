@@ -11,7 +11,7 @@ export const MovieList = (props) => {
       <Movie
         film={film}
         id={idx}
-        key={Math.random() + idx}
+        key={film.id}
       />
     ))}
   </div>;
