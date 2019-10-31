@@ -11,7 +11,8 @@ it(`Is movie render`, () => {
       film={films[0]}
       id={0}
       key={0}
-    />);
+      onMovieClick={jest.fn()}
+    />).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

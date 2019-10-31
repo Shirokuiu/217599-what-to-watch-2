@@ -1,36 +1,49 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 
+import MoviePage from "../movie-page/movie-page";
+
 import {MainPage} from "../main-page/main-page";
-import {MovieOverviewPage} from "../movie-details-page/movie-overview-page";
+import {NotFound} from "../not-found/not-found";
 
-const getPageScreen = (mocks) => {
-  switch (location.pathname) {
-    case `/`:
-      return <MainPage filmsMock={mocks}/>;
-    case `/film-overview-${getCurrentMovie(`id`)}`:
-      return <MovieOverviewPage movie={getCurrentMovie(`movie`, mocks)}/>;
+export default class App extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      movieId: null
+    };
+
+    this.handleMovieClick = this.handleMovieClick.bind(this);
   }
 
-  return null;
-};
+  _getScreenOutlet(mocks, onMovieClick) {
+    const movieId = window.localStorage.getItem(`movieId`);
 
-const getCurrentMovie = (mode, mocks = null) => {
-  switch (mode) {
-    case `id`:
-      return location.pathname.split(`-`).splice(-1);
-    case `movie`:
-      return mocks[location.pathname.split(`-`).splice(-1)];
+    switch (location.pathname) {
+      case `/`:
+        return <MainPage filmsMock={mocks} onMovieClick={onMovieClick}/>;
+      case `/movie-${movieId}-overview`:
+        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
+      case `/movie-${movieId}-details`:
+        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
+      case `/movie-${movieId}-reviews`:
+        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
+    }
+    return <NotFound />;
   }
 
-  return null;
-};
+  handleMovieClick(movieId) {
+    this.setState({movieId});
+    window.localStorage.setItem(`movieId`, movieId);
+  }
 
-export const App = (props) => {
-  const {films} = props;
+  render() {
+    const {films} = this.props;
 
-  return <React.Fragment>{getPageScreen(films)}</React.Fragment>;
-};
+    return <React.Fragment>{this._getScreenOutlet(films, this.handleMovieClick)}</React.Fragment>;
+  }
+}
 
 App.propTypes = {
   films: PropTypes.array.isRequired

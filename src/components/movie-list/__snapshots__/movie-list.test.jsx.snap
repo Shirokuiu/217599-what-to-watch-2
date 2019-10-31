@@ -26,7 +26,7 @@ exports[`Is movie list rendered 1`] = `
     >
       <a
         className="small-movie-card__link"
-        href="/film-overview-0"
+        href="/movie-0-overview"
       >
         Fantastic Beasts
       </a>
@@ -54,7 +54,7 @@ exports[`Is movie list rendered 1`] = `
     >
       <a
         className="small-movie-card__link"
-        href="/film-overview-1"
+        href="/movie-1-overview"
       >
         Bohemian Rhapsody
       </a>

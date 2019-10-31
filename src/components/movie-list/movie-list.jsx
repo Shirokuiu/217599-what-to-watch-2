@@ -4,13 +4,15 @@ import PropTypes from "prop-types";
 import Movie from "../movie/movie";
 
 export const MovieList = (props) => {
-  const {films} = props;
+  const {films, onMovieClick, onMoviePageClick} = props;
 
   return <div className="catalog__movies-list">
     {films.map((film, idx) => (
       <Movie
         film={film}
         id={idx}
+        onMovieClick={onMovieClick}
+        onMoviePageClick={onMoviePageClick}
         key={film.id}
       />
     ))}
@@ -18,5 +20,7 @@ export const MovieList = (props) => {
 };
 
 MovieList.propTypes = {
-  films: PropTypes.array
+  films: PropTypes.array.isRequired,
+  onMovieClick: PropTypes.func.isRequired,
+  onMoviePageClick: PropTypes.func
 };

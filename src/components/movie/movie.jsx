@@ -19,10 +19,20 @@ export default class Movie extends PureComponent {
     this._handleMovieLeave = this._handleMovieLeave.bind(this);
   }
 
-  _handleMovieClick() {
-    const {id} = this.props;
+  componentWillUnmount() {
+    clearTimeout(this.timerId);
+  }
 
-    location.href = `/film-overview-${id}`;
+  _handleMovieClick(evt) {
+    evt.preventDefault();
+
+    const {id, onMovieClick, onMoviePageClick} = this.props;
+
+    onMovieClick(id);
+    if (onMoviePageClick) {
+      onMoviePageClick();
+    }
+    history.pushState(null, null, `/movie-${id}-overview`);
   }
 
   _handleMovieEnter() {
@@ -59,7 +69,7 @@ export default class Movie extends PureComponent {
         />
       </div>
       <h3 className="small-movie-card__title">
-        <a className="small-movie-card__link" href={`/film-overview-${id}`}>{title}</a>
+        <a className="small-movie-card__link" href={`/movie-${id}-overview`}>{title}</a>
       </h3>
     </article>;
   }
@@ -71,5 +81,7 @@ Movie.propTypes = {
     title: PropTypes.string,
     preview: PropTypes.string
   }).isRequired,
-  id: PropTypes.number
+  id: PropTypes.number.isRequired,
+  onMovieClick: PropTypes.func.isRequired,
+  onMoviePageClick: PropTypes.func
 };

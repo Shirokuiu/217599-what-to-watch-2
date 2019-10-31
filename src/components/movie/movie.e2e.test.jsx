@@ -13,9 +13,10 @@ it(`Movie have state - isPlaying`, () => {
     film={films[0]}
     id={0}
     key={0}
+    onMovieClick={jest.fn()}
   />);
 
-  expect(movie.state(`isPlaying`)).toBe(false);
+  expect(movie.state()).toHaveProperty(`isPlaying`);
 });
 
 describe(`Show movie preview`, () => {
@@ -23,20 +24,21 @@ describe(`Show movie preview`, () => {
     film={films[0]}
     id={0}
     key={0}
+    onMovieClick={jest.fn()}
   />);
 
   it(`Movie set state isPlaying - true, when mouseenter`, () => {
     movie.simulate(`mouseEnter`);
 
     setTimeout(() => {
-      expect(movie.state(`isPlaying`)).toBe(true);
+      expect(movie.state(`isPlaying`)).toBeTruthy();
     }, 1000);
   });
 
   it(`Movie set state isPlaying - false, when mouseleave`, () => {
     movie.simulate(`mouseLeave`);
 
-    expect(movie.state(`isPlaying`)).toBe(false);
+    expect(movie.state(`isPlaying`)).toBeFalsy();
   });
 });
 
