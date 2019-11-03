@@ -10,6 +10,11 @@ const getMovies = (movieGenre) => {
   return films;
 };
 
+const initialState = {
+  genre: `All genres`,
+  movies: films
+};
+
 export const ActionCreator = {
   setGenre: (genre) => ({
     type: `SET_GENRE`,
@@ -21,11 +26,6 @@ export const ActionCreator = {
       payload: getMovies(genre)
     };
   }
-};
-
-export const initialState = {
-  genre: `All genres`,
-  movies: films
 };
 
 export const reducer = (state = initialState, action) => {
