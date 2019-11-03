@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 
 import MoviePage from "../movie-page/movie-page";
 
-import {MainPage} from "../main-page/main-page";
+import MainPage from "../main-page/main-page";
+
 import {NotFound} from "../not-found/not-found";
 
 export default class App extends PureComponent {
@@ -22,7 +23,7 @@ export default class App extends PureComponent {
 
     switch (location.pathname) {
       case `/`:
-        return <MainPage filmsMock={mocks} onMovieClick={onMovieClick}/>;
+        return <MainPage onMovieClick={onMovieClick}/>;
       case `/movie-${movieId}-overview`:
         return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
       case `/movie-${movieId}-details`:

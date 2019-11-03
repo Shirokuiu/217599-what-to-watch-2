@@ -2,6 +2,7 @@ export const films = [
   {
     img: `fantastic-beasts-the-crimes-of-grindelwald.jpg`,
     title: `Fantastic Beasts`,
+    genre: `comedies`,
     rate: {
       currentRate: 8.7,
       allRate: 100
@@ -15,6 +16,7 @@ export const films = [
   {
     img: `bohemian-rhapsody.jpg`,
     title: `Bohemian Rhapsody`,
+    genre: `documentary`,
     rate: {
       currentRate: 7.7,
       allRate: 200
@@ -26,3 +28,23 @@ export const films = [
     id: 2
   }
 ];
+
+export const Tab = {
+  moviePage: [
+    `Overview`,
+    `Details`,
+    `Reviews`
+  ],
+  genreCatalog: [
+    `All genres`,
+    `Comedies`,
+    `Crime`,
+    `Documentary`,
+    `Dramas`,
+    `Horror`,
+    `Kids & Family`,
+    `Romance`,
+    `Sci-Fi`,
+    `Thrillers`
+  ]
+};

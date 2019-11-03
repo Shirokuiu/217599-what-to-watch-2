@@ -1,47 +1,49 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 
-export const MovieTabs = (props) => {
-  const {movieId, onTabClick, activeTab} = props;
+import {Tab} from "../../mocks/mocks";
 
-  const handleTabClick = (evt) => {
+export default class MovieTabs extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.handleTabClick = this.handleTabClick.bind(this);
+  }
+
+  handleTabClick(evt) {
     evt.preventDefault();
 
+    const {onTabClick} = this.props;
     const {href, id} = evt.target;
 
     history.pushState(null, null, href);
     onTabClick(id);
-  };
+  }
 
-  return <nav className="movie-nav movie-card__nav">
-    <ul className="movie-nav__list">
-      <li className={activeTab.includes(`overview`) ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`}>
-        <a
-          className="movie-nav__link"
-          onClick={handleTabClick}
-          href={`/movie-${movieId}-overview`}
-          id="overview"
-        >Overview</a>
-      </li>
-      <li className={activeTab.includes(`details`) ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`}>
-        <a
-          className="movie-nav__link"
-          onClick={handleTabClick}
-          href={`/movie-${movieId}-details`}
-          id="details"
-        >Details</a>
-      </li>
-      <li className={activeTab.includes(`reviews`) ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`}>
-        <a
-          className="movie-nav__link"
-          onClick={handleTabClick}
-          href={`/movie-${movieId}-reviews`}
-          id="reviews"
-        >Reviews</a>
-      </li>
-    </ul>
-  </nav>;
-};
+  render() {
+    const {movieId, activeTab} = this.props;
+
+    return <nav className="movie-nav movie-card__nav">
+      <ul className="movie-nav__list">
+        {Tab.moviePage.map((tab, idx) => (
+          <li
+            key={tab + idx}
+            className={
+              activeTab.toLowerCase()
+                .includes(tab.toLowerCase()) ? `movie-nav__item movie-nav__item--active` : `movie-nav__item`
+            }
+          >
+            <a
+              className="movie-nav__link"
+              onClick={this.handleTabClick}
+              href={`/movie-${movieId}-${tab.toLowerCase()}`}
+              id={tab}
+            >{tab}</a>
+          </li>))}
+      </ul>
+    </nav>;
+  }
+}
 
 MovieTabs.propTypes = {
   movieId: PropTypes.number.isRequired,

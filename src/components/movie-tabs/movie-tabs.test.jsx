@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import {MovieTabs} from "./movie-tabs";
+import MovieTabs from "./movie-tabs";
 
 it(`Is movie tabs rendered`, () => {
   const tree = renderer.create(<MovieTabs

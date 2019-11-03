@@ -1,7 +1,8 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 
-import {MovieTabs} from "../movie-tabs/movie-tabs";
+import MovieTabs from "../movie-tabs/movie-tabs";
+
 import {SimmilarMovie} from "../simmilar-movie/simmilar-movie";
 import {NotFound} from "../not-found/not-found";
 import {MovieOverview} from "../movie-overview/movie-overview";

@@ -166,7 +166,7 @@ Array [
                 <a
                   className="movie-nav__link"
                   href="/movie-0-overview"
-                  id="overview"
+                  id="Overview"
                   onClick={[Function]}
                 >
                   Overview
@@ -178,7 +178,7 @@ Array [
                 <a
                   className="movie-nav__link"
                   href="/movie-0-details"
-                  id="details"
+                  id="Details"
                   onClick={[Function]}
                 >
                   Details
@@ -190,7 +190,7 @@ Array [
                 <a
                   className="movie-nav__link"
                   href="/movie-0-reviews"
-                  id="reviews"
+                  id="Reviews"
                   onClick={[Function]}
                 >
                   Reviews
