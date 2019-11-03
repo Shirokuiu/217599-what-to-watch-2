@@ -1,13 +1,16 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, {shallow} from "enzyme";
+import toJson from "enzyme-to-json";
+import Adapter from "enzyme-adapter-react-16";
 
 import MainPage from "./main-page";
 
-it(`Is MainPage rendered`, () => {
-  const tree = renderer
-    .create(<MainPage
-      onMovieClick={jest.fn()}
-    />).toJSON();
+Enzyme.configure({adapter: new Adapter()});
 
-  expect(tree).toMatchSnapshot();
+it(`Is MainPage rendered`, () => {
+  const tree = shallow(<MainPage
+    onMovieClick={jest.fn()}
+  />);
+
+  expect(toJson(tree)).toMatchSnapshot();
 });

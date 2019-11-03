@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Is genre catalog rendered 1`] = `
+<section
+  className="catalog"
+>
+  <h2
+    className="catalog__title visually-hidden"
+  >
+    Catalog
+  </h2>
+  <Connect(GenreCatalogTab) />
+  <MovieList
+    films={
+      Array [
+        Object {
+          "description": "In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave's friend and protege.",
+          "director": "Wes Andreson",
+          "genre": "comedies",
+          "id": 1,
+          "img": "fantastic-beasts-the-crimes-of-grindelwald.jpg",
+          "preview": "https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4",
+          "rate": Object {
+            "allRate": 100,
+            "currentRate": 8.7,
+          },
+          "starrings": Array [
+            "Bill Murray",
+            "Edward Norton",
+            "Jude Law",
+            "Willem Dafoe",
+          ],
+          "title": "Fantastic Beasts",
+        },
+        Object {
+          "description": "In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave's friend and protege.",
+          "director": "Wes Andreson",
+          "genre": "documentary",
+          "id": 2,
+          "img": "bohemian-rhapsody.jpg",
+          "preview": "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm",
+          "rate": Object {
+            "allRate": 200,
+            "currentRate": 7.7,
+          },
+          "starrings": Array [
+            "Bill Murray",
+            "Edward Norton",
+            "Jude Law",
+            "Willem Dafoe",
+          ],
+          "title": "Bohemian Rhapsody",
+        },
+      ]
+    }
+    onMovieClick={[MockFunction]}
+  />
+  <div
+    className="catalog__more"
+  >
+    <button
+      className="catalog__button"
+      type="button"
+    >
+      Show more
+    </button>
+  </div>
+</section>
+`;

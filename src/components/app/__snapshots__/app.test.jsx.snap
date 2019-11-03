@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Is App render 1`] = `
+<Fragment>
+  <MainPage
+    onMovieClick={[Function]}
+  />
+</Fragment>
+`;

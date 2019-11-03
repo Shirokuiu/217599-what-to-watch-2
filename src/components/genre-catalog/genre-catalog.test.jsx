@@ -1,16 +1,19 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, {shallow} from "enzyme";
+import toJson from "enzyme-to-json";
+import Adapter from "enzyme-adapter-react-16";
 
 import {GenreCatalog} from "./genre-catalog";
 
 import {films} from "../../mocks/mocks";
 
-it(`Is genre catalog rendered`, () => {
-  const tree = renderer
-    .create(<GenreCatalog
-      onMovieClick={jest.fn()}
-      movies={films}
-    />);
+Enzyme.configure({adapter: new Adapter()});
 
-  expect(tree).toMatchSnapshot();
+it(`Is genre catalog rendered`, () => {
+  const tree = shallow(<GenreCatalog
+    onMovieClick={jest.fn()}
+    movies={films}
+  />);
+
+  expect(toJson(tree)).toMatchSnapshot();
 });
