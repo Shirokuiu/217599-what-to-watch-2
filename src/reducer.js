@@ -1,6 +1,6 @@
 import {films} from "./mocks/mocks";
 
-const getMoviesByGenre = (movieGenre) => {
+export const getMoviesByGenre = (movieGenre) => {
   const movieLowerCase = movieGenre.toLowerCase();
   const genreLowerCase = initialState.movie.genreCatalog.genre.toLowerCase();
 
@@ -26,6 +26,10 @@ export const initialState = {
       genre: `All genres`,
       movies: films
     }
+  },
+  settings: {
+    movieToRow: 8,
+    movieToLoad: 20
   }
 };
 

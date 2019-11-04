@@ -1,4 +1,4 @@
-import {ActionCreator, initialState, reducer} from "./reducer";
+import {ActionCreator, getMoviesByGenre, initialState, reducer} from "./reducer";
 
 import {films} from "./mocks/mocks";
 
@@ -12,29 +12,45 @@ describe(`Reducers works correctly`, () => {
 
   it(`Reducer should set genre by a given value`, () => {
     expect(reducer({
-      genre: `All genres`,
-      movies: films
+      movie: {
+        genreCatalog: {
+          genre: `All genres`,
+          movies: films
+        }
+      }
     }, {
       type: `SET_GENRE`,
       payload: `comedies`
     }))
       .toEqual({
-        genre: `comedies`,
-        movies: films
+        movie: {
+          genreCatalog: {
+            genre: `comedies`,
+            movies: films
+          }
+        }
       });
   });
 
   it(`Reducer should return filtered movies`, () => {
     expect(reducer({
-      genre: `All genres`,
-      movies: films
+      movie: {
+        genreCatalog: {
+          genre: `All genres`,
+          movies: films
+        }
+      }
     }, {
-      type: `FILTER_MOVIES`,
-      payload: films[0]
+      type: `FILTER_MOVIES_BY_GENRE`,
+      payload: films
     }))
       .toEqual({
-        genre: `All genres`,
-        movies: films[0]
+        movie: {
+          genreCatalog: {
+            genre: `All genres`,
+            movies: films
+          }
+        }
       });
   });
 });
@@ -49,10 +65,10 @@ describe(`Action creator works correctly`, () => {
   });
 
   it(`Action creator filter movies by a given value`, () => {
-    expect(ActionCreator.filterMovies(`comedies`))
+    expect(ActionCreator.filterMoviesByGenre(`Comedies`))
       .toEqual({
-        type: `FILTER_MOVIES`,
-        payload: [films[0]]
+        type: `FILTER_MOVIES_BY_GENRE`,
+        payload: getMoviesByGenre(`Comedies`)
       });
   });
 });
