@@ -28,7 +28,7 @@ GenreCatalog.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  movies: state.movies
+  movies: state.movie.genreCatalog.movies
 });
 
 export default connect(mapStateToProps)(GenreCatalog);

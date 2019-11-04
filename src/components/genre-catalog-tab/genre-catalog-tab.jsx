@@ -42,7 +42,7 @@ GenreCatalogTab.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  genre: state.genre
+  genre: state.movie.genreCatalog.genre
 });
 
 const mapDispatchToProps = (dispatch) => ({
