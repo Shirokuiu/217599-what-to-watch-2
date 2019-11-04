@@ -1,13 +1,12 @@
 import {films} from "./mocks/mocks";
 
-const getMovies = (movieGenre) => {
-  switch (movieGenre) {
-    case `comedies`:
-      return films.slice().filter(({genre}) => genre.includes(`comedies`));
-    case `documentary`:
-      return films.slice().filter(({genre}) => genre.includes(`documentary`));
-  }
-  return films;
+const getMoviesByGenre = (movieGenre) => {
+  const movieLowerCase = movieGenre.toLowerCase();
+  const genreLowerCase = initialState.genre.toLowerCase();
+
+  return movieLowerCase !== genreLowerCase ?
+    films.slice().filter(({genre}) => genre.toLowerCase().includes(movieLowerCase)) :
+    films;
 };
 
 export const ActionCreator = {
@@ -15,17 +14,15 @@ export const ActionCreator = {
     type: `SET_GENRE`,
     payload: genre
   }),
-  filterMovies: (genre) => {
-    return {
-      type: `FILTER_MOVIES`,
-      payload: getMovies(genre)
-    };
-  }
+  filterMoviesByGenre: (genre) => ({
+    type: `FILTER_MOVIES_BY_GENRE`,
+    payload: getMoviesByGenre(genre)
+  })
 };
 
 export const initialState = {
   genre: `All genres`,
-  movies: films
+  movies: films,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -34,7 +31,7 @@ export const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         genre: action.payload
       });
-    case `FILTER_MOVIES`:
+    case `FILTER_MOVIES_BY_GENRE`:
       return Object.assign({}, state, {
         movies: action.payload
       });

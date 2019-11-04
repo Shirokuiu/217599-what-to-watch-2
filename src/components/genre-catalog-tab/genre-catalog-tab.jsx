@@ -42,13 +42,13 @@ GenreCatalogTab.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  genre: state.genre,
+  genre: state.genre
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onTabClick: (genre) => {
     dispatch(ActionCreator.setGenre(genre));
-    dispatch(ActionCreator.filterMovies(genre));
+    dispatch(ActionCreator.filterMoviesByGenre(genre));
   }
 });
 
