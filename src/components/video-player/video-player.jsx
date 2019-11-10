@@ -12,7 +12,7 @@ export default class VideoPlayer extends PureComponent {
     const {playerState} = this.props;
     const video = this.videoRef.current;
 
-    if (playerState.isPlaying) {
+    if (playerState) {
       video.play();
     } else {
       video.pause();
@@ -41,7 +41,5 @@ VideoPlayer.propTypes = {
   muted: PropTypes.bool.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
-  playerState: PropTypes.exact({
-    isPlaying: PropTypes.bool
-  }).isRequired
+  playerState: PropTypes.any
 };

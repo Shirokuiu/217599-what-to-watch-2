@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import {Movie} from "./movie";
+import {Movie} from "../../components/movie/movie";
 
 import {films} from "../../mocks/mocks";
 
