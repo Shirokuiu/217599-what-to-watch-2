@@ -22,25 +22,33 @@ export const getLoadedMovies = (step) => {
   return films;
 };
 
+export const ActionType = {
+  SET_GENRE: `SET_GENRE`,
+  FILTER_MOVIES_BY_GENRE: `FILTER_MOVIES_BY_GENRE`,
+  UPDATE_MOVIES_LOADED_COUNT: `UPDATE_MOVIES_LOADED_COUNT`,
+  RESET_MOVIES_LOADED_COUNT: `RESET_MOVIES_LOADED_COUNT`,
+  LOAD_MORE_MOVIES: `LOAD_MORE_MOVIES`
+};
+
 export const ActionCreator = {
   setGenre: (genre) => ({
-    type: `SET_GENRE`,
+    type: ActionType.SET_GENRE,
     payload: genre
   }),
   filterMoviesByGenre: (genre) => ({
-    type: `FILTER_MOVIES_BY_GENRE`,
+    type: ActionType.FILTER_MOVIES_BY_GENRE,
     payload: getMoviesByGenre(genre)
   }),
   updateMoviesLoadedCount: () => ({
-    type: `UPDATE_MOVIES_LOADED_COUNT`,
+    type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
     payload: AppSettings.MOVIES_TO_LOAD
   }),
   resetMoviesLoadedCount: () => ({
-    type: `RESET_MOVIES_LOADED_COUNT`,
+    type: ActionType.RESET_MOVIES_LOADED_COUNT,
     payload: AppSettings.MOVIES_INIT_LENGTH
   }),
   loadMoreMovies: (stepCount) => ({
-    type: `LOAD_MORE_MOVIES`,
+    type: ActionType.LOAD_MORE_MOVIES,
     payload: getLoadedMovies(stepCount + AppSettings.MOVIES_TO_LOAD)
   })
 };
@@ -57,7 +65,7 @@ export const initialState = {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case `SET_GENRE`:
+    case ActionType.SET_GENRE:
       return Object.assign({}, state, {
         movie: {
           genreCatalog: Object.assign({}, state.movie.genreCatalog, {
@@ -65,7 +73,7 @@ export const reducer = (state = initialState, action) => {
           })
         }
       });
-    case `FILTER_MOVIES_BY_GENRE`:
+    case ActionType.FILTER_MOVIES_BY_GENRE:
       return Object.assign({}, state, {
         movie: {
           genreCatalog: Object.assign({}, state.movie.genreCatalog, {
@@ -73,7 +81,7 @@ export const reducer = (state = initialState, action) => {
           })
         }
       });
-    case `UPDATE_MOVIES_LOADED_COUNT`:
+    case ActionType.UPDATE_MOVIES_LOADED_COUNT:
       return Object.assign({}, state, {
         movie: {
           genreCatalog: Object.assign({}, state.movie.genreCatalog, {
@@ -81,7 +89,7 @@ export const reducer = (state = initialState, action) => {
           })
         }
       });
-    case `RESET_MOVIES_LOADED_COUNT`:
+    case ActionType.RESET_MOVIES_LOADED_COUNT:
       return Object.assign({}, state, {
         movie: {
           genreCatalog: Object.assign({}, state.movie.genreCatalog, {
@@ -89,7 +97,7 @@ export const reducer = (state = initialState, action) => {
           })
         }
       });
-    case `LOAD_MORE_MOVIES`:
+    case ActionType.LOAD_MORE_MOVIES:
       return Object.assign({}, state, {
         movie: {
           genreCatalog: Object.assign({}, state.movie.genreCatalog, {

@@ -1,4 +1,12 @@
-import {ActionCreator, AppSettings, getLoadedMovies, getMoviesByGenre, initialState, reducer} from "./reducer";
+import {
+  ActionCreator,
+  ActionType,
+  AppSettings,
+  getLoadedMovies,
+  getMoviesByGenre,
+  initialState,
+  reducer
+} from "./reducer";
 
 import {films} from "./mocks/mocks";
 
@@ -12,7 +20,7 @@ describe(`Reducers works correctly`, () => {
 
   it(`Reducer should set genre by a given value`, () => {
     expect(reducer(Object.assign({}, initialState), {
-      type: `SET_GENRE`,
+      type: ActionType.SET_GENRE,
       payload: `comedies`
     })).toEqual(Object.assign({}, initialState, {
       movie: {
@@ -32,7 +40,7 @@ describe(`Reducers works correctly`, () => {
         })
       }
     }), {
-      type: `FILTER_MOVIES_BY_GENRE`,
+      type: ActionType.FILTER_MOVIES_BY_GENRE,
       payload: getMoviesByGenre(`Comedies`)
     })).toEqual(Object.assign({}, initialState, {
       movie: {
@@ -46,7 +54,7 @@ describe(`Reducers works correctly`, () => {
 
   it(`Reducer should update movies by loaded count`, () => {
     expect(reducer(Object.assign({}, initialState), {
-      type: `UPDATE_MOVIES_LOADED_COUNT`,
+      type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
       payload: AppSettings.MOVIES_TO_LOAD
     })).toEqual(Object.assign({}, initialState, {
       movie: {
@@ -59,7 +67,7 @@ describe(`Reducers works correctly`, () => {
 
   it(`Reducer should reset movies by loaded count by a given value`, () => {
     expect(reducer(Object.assign({}, initialState), {
-      type: `RESET_MOVIES_LOADED_COUNT`,
+      type: ActionType.RESET_MOVIES_LOADED_COUNT,
       payload: AppSettings.MOVIES_TO_LOAD
     })).toEqual(Object.assign({}, initialState, {
       movie: {
@@ -72,7 +80,7 @@ describe(`Reducers works correctly`, () => {
 
   it(`Reducer should return new loaded movies`, () => {
     expect(reducer(Object.assign({}, initialState), {
-      type: `LOAD_MORE_MOVIES`,
+      type: ActionType.LOAD_MORE_MOVIES,
       payload: getLoadedMovies(AppSettings.MOVIES_INIT_LENGTH)
     })).toEqual(Object.assign({}, initialState, {
       movie: {
@@ -88,7 +96,7 @@ describe(`Action creator works correctly`, () => {
   it(`Action creator set genre by a given value`, () => {
     expect(ActionCreator.setGenre(`comedies`))
       .toEqual({
-        type: `SET_GENRE`,
+        type: ActionType.SET_GENRE,
         payload: `comedies`
       });
   });
@@ -96,28 +104,28 @@ describe(`Action creator works correctly`, () => {
   it(`Action creator filter movies by a given value`, () => {
     expect(ActionCreator.filterMoviesByGenre(`Comedies`))
       .toEqual({
-        type: `FILTER_MOVIES_BY_GENRE`,
+        type: ActionType.FILTER_MOVIES_BY_GENRE,
         payload: getMoviesByGenre(`Comedies`)
       });
   });
 
   it(`Action creator update movies loaded count by a given value for app settings`, () => {
     expect(ActionCreator.updateMoviesLoadedCount()).toEqual({
-      type: `UPDATE_MOVIES_LOADED_COUNT`,
+      type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
       payload: AppSettings.MOVIES_TO_LOAD
     });
   });
 
   it(`Action creator reset movies loaded count`, () => {
     expect(ActionCreator.resetMoviesLoadedCount()).toEqual({
-      type: `RESET_MOVIES_LOADED_COUNT`,
+      type: ActionType.RESET_MOVIES_LOADED_COUNT,
       payload: AppSettings.MOVIES_INIT_LENGTH
     });
   });
 
   it(`Action creator return loaded movies by a given value`, () => {
     expect(ActionCreator.loadMoreMovies(AppSettings.MOVIES_INIT_LENGTH)).toEqual({
-      type: `LOAD_MORE_MOVIES`,
+      type: ActionType.LOAD_MORE_MOVIES,
       payload: films.slice(0, AppSettings.MOVIES_INIT_LENGTH + AppSettings.MOVIES_TO_LOAD)
     });
   });
