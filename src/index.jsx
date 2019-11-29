@@ -17,5 +17,5 @@ const init = () => {
   </Provider>,
   document.querySelector(`#root`));
 };
-// transfer
+
 init();
