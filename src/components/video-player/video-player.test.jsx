@@ -12,7 +12,7 @@ it(`Is video player rendered`, () => {
       width={280}
       height={175}
       playerState={{}}
-    />);
+    />).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

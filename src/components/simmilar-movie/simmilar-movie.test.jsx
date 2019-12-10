@@ -1,16 +1,21 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, {shallow} from "enzyme";
+import toJson from "enzyme-to-json";
+import Adapter from "enzyme-adapter-react-16";
+import {BrowserRouter} from "react-router-dom";
 
 import {SimmilarMovie} from "./simmilar-movie";
 
 import {films} from "../../mocks/mocks";
 
-it(`Is simmilar movie rendered`, () => {
-  const tree = renderer.create(<SimmilarMovie
-    mocks={films}
-    onMovieClick={jest.fn()}
-    onMoviePageClick={jest.fn()}
-  />).toJSON();
+Enzyme.configure({adapter: new Adapter()});
 
-  expect(tree).toMatchSnapshot();
+it(`Is simmilar movie rendered`, () => {
+  const tree = shallow(<BrowserRouter>
+    <SimmilarMovie
+      simmilarMovies={films.slice(0, 4)}
+    />
+  </BrowserRouter>);
+
+  expect(toJson(tree)).toMatchSnapshot();
 });

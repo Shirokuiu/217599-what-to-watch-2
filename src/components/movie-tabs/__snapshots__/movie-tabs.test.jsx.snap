@@ -7,42 +7,45 @@ exports[`Is movie tabs rendered 1`] = `
   <ul
     className="movie-nav__list"
   >
-    <li
+    <a
+      aria-current={null}
       className="movie-nav__item"
+      href="/movie/0/overview"
+      onClick={[Function]}
     >
-      <a
+      <span
         className="movie-nav__link"
-        href="/movie-0-overview"
         id="Overview"
-        onClick={[Function]}
       >
         Overview
-      </a>
-    </li>
-    <li
-      className="movie-nav__item movie-nav__item--active"
+      </span>
+    </a>
+    <a
+      aria-current={null}
+      className="movie-nav__item"
+      href="/movie/0/details"
+      onClick={[Function]}
     >
-      <a
+      <span
         className="movie-nav__link"
-        href="/movie-0-details"
         id="Details"
-        onClick={[Function]}
       >
         Details
-      </a>
-    </li>
-    <li
+      </span>
+    </a>
+    <a
+      aria-current={null}
       className="movie-nav__item"
+      href="/movie/0/reviews"
+      onClick={[Function]}
     >
-      <a
+      <span
         className="movie-nav__link"
-        href="/movie-0-reviews"
         id="Reviews"
-        onClick={[Function]}
       >
         Reviews
-      </a>
-    </li>
+      </span>
+    </a>
   </ul>
 </nav>
 `;

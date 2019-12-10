@@ -1,51 +1,38 @@
-import React, {PureComponent} from "react";
-import PropTypes from "prop-types";
+import React from "react";
+import {BrowserRouter, Route, Switch} from "react-router-dom";
 
 import MoviePage from "../movie-page/movie-page";
-
 import MainPage from "../main-page/main-page";
-
+import LoginPage from "../login-page/login-page";
+import AddReviewPage from "../add-review-page/add-review-page";
+import MoviePlayer from "../movie-player/movie-player";
+import {MyList} from "../my-list/my-list";
 import {NotFound} from "../not-found/not-found";
 
-export default class App extends PureComponent {
-  constructor(props) {
-    super(props);
+import {withPrivateRoute} from "../../hocs/with-private-route/with-private-route";
+import {withMoviePlayer} from "../../hocs/with-movie-player/with-movie-player";
+import {withSessionStorage} from "../../hocs/with-session-storage/with-session-storage";
 
-    this.state = {
-      movieId: null
-    };
+const AddReviewPagePrivate = withPrivateRoute(AddReviewPage);
+const MyListPrivate = withPrivateRoute(MyList);
+const MoviePlayerWrapped = withMoviePlayer(withSessionStorage(MoviePlayer));
+const MoviePageWrapped = withSessionStorage(MoviePage);
 
-    this.handleMovieClick = this.handleMovieClick.bind(this);
-  }
+export const AppSettings = {
+  MOVIES_INIT_LENGTH: 8,
+  MOVIES_TO_LOAD: 20
+};
 
-  _getScreenOutlet(mocks, onMovieClick) {
-    const movieId = window.localStorage.getItem(`movieId`);
-
-    switch (location.pathname) {
-      case `/`:
-        return <MainPage onMovieClick={onMovieClick}/>;
-      case `/movie-${movieId}-overview`:
-        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
-      case `/movie-${movieId}-details`:
-        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
-      case `/movie-${movieId}-reviews`:
-        return <MoviePage filmsMock={mocks} movie={mocks[movieId]} onMovieClick={onMovieClick} movieId={+movieId}/>;
-    }
-    return <NotFound />;
-  }
-
-  handleMovieClick(movieId) {
-    this.setState({movieId});
-    window.localStorage.setItem(`movieId`, movieId);
-  }
-
-  render() {
-    const {films} = this.props;
-
-    return <React.Fragment>{this._getScreenOutlet(films, this.handleMovieClick)}</React.Fragment>;
-  }
-}
-
-App.propTypes = {
-  films: PropTypes.array.isRequired
+export const App = () => {
+  return <BrowserRouter>
+    <Switch>
+      <Route path="/" component={MainPage} exact />
+      <Route path="/login" component={LoginPage} exact />
+      <Route path="/movie/:movieId/add-review" component={AddReviewPagePrivate} />
+      <Route path="/movie/:movieId/watch" component={MoviePlayerWrapped} />
+      <Route path="/movie/:movieId" component={MoviePageWrapped} />
+      <Route path="/my-list" component={MyListPrivate} exact/>
+      <Route component={NotFound} />
+    </Switch>
+  </BrowserRouter>;
 };
