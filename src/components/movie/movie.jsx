@@ -1,18 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 
 import VideoPlayer from "../video-player/video-player";
 
+import {ActionCreator} from "../../reducer";
+
 export const Movie = (props) => {
-  const {movie, onMovieEnter, onMovieLeave, isPlaying} = props;
+  const {movie, onMovieEnter, onMovieLeave, isPlaying, onMovieClick} = props;
   const {previewImage, name, previewVideoLink, id} = movie;
+
+  const handleMovieClick = () => {
+    onMovieClick(id - 1);
+  };
 
   return <Link
     to={`/movie/${id}/overview`}
     className="small-movie-card catalog__movies-card"
     onMouseEnter={onMovieEnter}
     onMouseLeave={onMovieLeave}
+    onClick={handleMovieClick}
   >
     <div className="small-movie-card__image">
       <VideoPlayer
@@ -52,5 +60,14 @@ Movie.propTypes = {
   }).isRequired,
   onMovieEnter: PropTypes.func,
   onMovieLeave: PropTypes.func,
-  isPlaying: PropTypes.bool
+  isPlaying: PropTypes.bool,
+  onMovieClick: PropTypes.func
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  onMovieClick: (movieId) => {
+    dispatch(ActionCreator.updateCurrentMovie(movieId));
+  }
+});
+
+export default connect(null, mapDispatchToProps)(Movie);

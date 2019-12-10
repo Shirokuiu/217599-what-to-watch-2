@@ -51,7 +51,7 @@ exports[`Is App render 1`] = `
           "$$typeof": Symbol(react.memo),
           "WrappedComponent": [Function],
           "compare": null,
-          "displayName": "Connect(WithGetStore)",
+          "displayName": "Connect(WithSessionStorage)",
           "type": [Function],
         }
       }

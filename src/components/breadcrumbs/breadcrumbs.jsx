@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 
 export const Breadcrumbs = (props) => {
-  const {movies, movieId} = props;
-  const movie = movies[movieId];
+  const {currentMovie} = props;
+  const {name, id} = currentMovie;
 
   return <nav className="breadcrumbs">
     <ul className="breadcrumbs__list">
       <li className="breadcrumbs__item">
-        {movie ? <Link to={`/movie/${movieId + 1}/overview`} className="breadcrumbs__link">{movie.name}</Link> : null}
+        <Link to={`/movie/${id}/overview`} className="breadcrumbs__link">{name}</Link>
       </li>
       <li className="breadcrumbs__item">
         <a className="breadcrumbs__link">Add review</a>
@@ -19,8 +19,7 @@ export const Breadcrumbs = (props) => {
 };
 
 Breadcrumbs.propTypes = {
-  movieId: PropTypes.number.isRequired,
-  movies: PropTypes.arrayOf(PropTypes.shape({
+  currentMovie: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
     posterImage: PropTypes.string,
@@ -38,5 +37,5 @@ Breadcrumbs.propTypes = {
     genre: PropTypes.string,
     released: PropTypes.number,
     isFavorite: PropTypes.bool,
-  })).isRequired
+  }).isRequired
 };

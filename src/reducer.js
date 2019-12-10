@@ -6,9 +6,8 @@ export const initialState = {
   promo: {},
   comments: [],
   moviesFavorite: [],
-  moviePlying: {},
+  currentMovie: JSON.parse(window.localStorage.getItem(`currentMovie`)),
   isAuthorized: false,
-  isMoviesLoaded: false,
   avatar: undefined
 };
 
@@ -18,9 +17,14 @@ export const ActionType = {
   LOAD_COMMENTS: `LOAD_COMMENTS`,
   LOAD_FAVORITE_MOVIES: `LOAD_FAVORITE_MOVIES`,
   CHECK_AUTHORIZATION: `CHECK_AUTHORIZATION`,
-  CHECK_LOADED_MOVIES: `CHECK_LOADED_MOVIES`,
   GET_AVATAR: `GET_AVATAR`,
-  GET_PLAYING_MOVIE: `GET_PLAYING_MOVIE`
+  UPDATE_CURRENT_MOVIE: `UPDATE_CURRENT_MOVIE`
+};
+
+const cashCurrentMovie = (movie) => {
+  window.localStorage.setItem(`currentMovie`, JSON.stringify(movie));
+
+  return movie;
 };
 
 export const Operation = {
@@ -28,10 +32,6 @@ export const Operation = {
     return api.get(`/films`)
       .then(({data}) => {
         dispatch(ActionCreator.loadMovies(data));
-        dispatch(ActionCreator.checkLoadedMovies(true));
-      })
-      .catch(() => {
-        dispatch(ActionCreator.checkLoadedMovies(false));
       });
   },
   loadPromo: () => (dispatch, _, api) => {
@@ -114,16 +114,12 @@ export const ActionCreator = {
     type: ActionType.CHECK_AUTHORIZATION,
     payload: isAuth
   }),
-  checkLoadedMovies: (isLoaded) => ({
-    type: ActionType.CHECK_LOADED_MOVIES,
-    payload: isLoaded
-  }),
   getAvatar: (avatarUrl) => ({
     type: ActionType.GET_AVATAR,
     payload: avatarUrl
   }),
-  getPlayingMovie: (movieId) => ({
-    type: ActionType.GET_PLAYING_MOVIE,
+  updateCurrentMovie: (movieId) => ({
+    type: ActionType.UPDATE_CURRENT_MOVIE,
     payload: movieId
   })
 };
@@ -150,17 +146,13 @@ export const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isAuthorized: action.payload
       });
-    case ActionType.CHECK_LOADED_MOVIES:
-      return Object.assign({}, state, {
-        isMoviesLoaded: action.payload
-      });
     case ActionType.GET_AVATAR:
       return Object.assign({}, state, {
         avatar: action.payload
       });
-    case ActionType.GET_PLAYING_MOVIE:
+    case ActionType.UPDATE_CURRENT_MOVIE:
       return Object.assign({}, state, {
-        moviePlying: state.movies[action.payload]
+        currentMovie: cashCurrentMovie(state.movies[action.payload])
       });
   }
   return state;

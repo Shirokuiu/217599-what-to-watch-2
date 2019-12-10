@@ -6,7 +6,7 @@ import Avatar from "../avatar/avatar";
 import {Breadcrumbs} from "../breadcrumbs/breadcrumbs";
 
 export const Header = (props) => {
-  const {parent, movieId, movies} = props;
+  const {parent, currentMovie} = props;
   const ParentStatus = {
     ADD_REVIEW: `addReview`,
     MY_LIST: `myList`
@@ -21,7 +21,7 @@ export const Header = (props) => {
       </Link>
     </div>
 
-    {ParentStatus[parent] === ParentStatus.ADD_REVIEW ? <Breadcrumbs movieId={movieId} movies={movies}/> : null}
+    {ParentStatus[parent] === ParentStatus.ADD_REVIEW ? <Breadcrumbs currentMovie={currentMovie}/> : null}
     {ParentStatus[parent] === ParentStatus.MY_LIST ? <h1 className="page-title user-page__title">My list</h1> : null}
 
     <Avatar />
@@ -30,8 +30,7 @@ export const Header = (props) => {
 
 Header.propTypes = {
   parent: PropTypes.string,
-  movieId: PropTypes.number,
-  movies: PropTypes.arrayOf(PropTypes.shape({
+  currentMovie: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
     posterImage: PropTypes.string,
@@ -49,5 +48,5 @@ Header.propTypes = {
     genre: PropTypes.string,
     released: PropTypes.number,
     isFavorite: PropTypes.bool,
-  }))
+  })
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {Movie} from "../movie/movie";
+import Movie from "../movie/movie";
 
 import {withMovieHover} from "../../hocs/with-movie-hover/with-movie-hover";
 

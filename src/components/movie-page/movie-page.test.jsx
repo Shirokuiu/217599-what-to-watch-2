@@ -13,14 +13,10 @@ Enzyme.configure({adapter: new Adapter()});
 it(`Is movie page rendered`, () => {
   const tree = shallow(<BrowserRouter>
     <MoviePage
-      match={{
-        params: {
-          movieId: `0`
-        }
-      }}
       history={{}}
       movies={films}
-      isMoviesLoaded={true}
+      currentMovie={films[0]}
+      onUpdateIsFavorite={jest.fn()}
     />
   </BrowserRouter>);
 

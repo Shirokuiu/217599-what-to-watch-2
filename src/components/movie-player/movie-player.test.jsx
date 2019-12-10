@@ -7,7 +7,7 @@ import {films} from "../../mocks/mocks";
 
 it(`Is movie player rendered`, () => {
   const tree = renderer.create(<MoviePlayer
-    moviePlying={films[0]}
+    currentMovie={films[0]}
     videoRef={React.createRef()}
     isPlaying={true}
     onPlaySwitch={jest.fn()}

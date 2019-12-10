@@ -9,7 +9,15 @@ exports[`Is breadcrumbs rendered 1`] = `
   >
     <li
       className="breadcrumbs__item"
-    />
+    >
+      <a
+        className="breadcrumbs__link"
+        href="/movie/1/overview"
+        onClick={[Function]}
+      >
+        The Grand Budapest Hotel
+      </a>
+    </li>
     <li
       className="breadcrumbs__item"
     >

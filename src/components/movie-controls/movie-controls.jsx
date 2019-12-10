@@ -61,7 +61,7 @@ MovieControls.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   onPlayClick: (movieId) => {
-    dispatch(ActionCreator.getPlayingMovie(movieId));
+    dispatch(ActionCreator.updateCurrentMovie(movieId));
   }
 });
 

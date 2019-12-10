@@ -24,15 +24,34 @@ exports[`Is movie page rendered 1`] = `
   }
 >
   <MoviePage
-    history={Object {}}
-    isMoviesLoaded={true}
-    match={
+    currentMovie={
       Object {
-        "params": Object {
-          "movieId": "0",
-        },
+        "backgroundColor": "#ffffff",
+        "backgroundImage": "img/the-grand-budapest-hotel-bg.jpg",
+        "description": "In the 1930s, the Grand Budapest Hotel is a popular European ski resort, presided over by concierge Gustave H. (Ralph Fiennes). Zero, a junior lobby boy, becomes Gustave's friend and protege.",
+        "director": "Wes Andreson",
+        "genre": "Comedy",
+        "id": 1,
+        "isFavorite": false,
+        "name": "The Grand Budapest Hotel",
+        "posterImage": "img/the-grand-budapest-hotel-poster.jpg",
+        "previewImage": "img/the-grand-budapest-hotel.jpg",
+        "previewVideoLink": "https://some-link",
+        "rating": 8.9,
+        "released": 2014,
+        "runTime": 99,
+        "scoresCount": 240,
+        "starring": Array [
+          "Bill Murray",
+          "Edward Norton",
+          "Jude Law",
+          "Willem Dafoe",
+          "Saoirse Ronan",
+        ],
+        "videoLink": "https://some-link",
       }
     }
+    history={Object {}}
     movies={
       Array [
         Object {
@@ -62,6 +81,7 @@ exports[`Is movie page rendered 1`] = `
         },
       ]
     }
+    onUpdateIsFavorite={[MockFunction]}
   />
 </Router>
 `;

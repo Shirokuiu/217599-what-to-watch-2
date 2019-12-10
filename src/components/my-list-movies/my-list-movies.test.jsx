@@ -1,17 +1,21 @@
 import React from "react";
-import renderer from "react-test-renderer";
+import Enzyme, {shallow} from "enzyme";
+import toJson from "enzyme-to-json";
+import Adapter from "enzyme-adapter-react-16";
 import {BrowserRouter} from "react-router-dom";
 
 import {MyListMovies} from "../my-list-movies/my-list-movies";
 
 import {films} from "../../mocks/mocks";
 
+Enzyme.configure({adapter: new Adapter()});
+
 it(`Is my list movies rendered`, () => {
-  const tree = renderer.create(<BrowserRouter>
+  const tree = shallow(<BrowserRouter>
     <MyListMovies
       moviesFavorite={films}
     />
-  </BrowserRouter>).toJSON();
+  </BrowserRouter>);
 
-  expect(tree).toMatchSnapshot();
+  expect(toJson(tree)).toMatchSnapshot();
 });

@@ -8,6 +8,7 @@ import {
 import {createAPI} from "./api";
 
 import FilmModel from "./models/film-model";
+import {films} from "./mocks/mocks";
 
 describe(`Reducers works correctly`, () => {
   const dispatch = jest.fn();
@@ -96,21 +97,21 @@ describe(`Reducers works correctly`, () => {
       });
   });
 
-  it(`Reducer should return loaded movies status`, () => {
-    expect(reducer(initialState, {
-      type: ActionType.CHECK_LOADED_MOVIES,
-      payload: false
-    })).toEqual(Object.assign({}, initialState, {
-      isMoviesLoaded: false
-    }));
-  });
-
   it(`Reducer should return avatar url`, () => {
     expect(reducer(initialState, {
       type: ActionType.GET_AVATAR,
       payload: `avatar`
     })).toEqual(Object.assign({}, initialState, {
       avatar: `avatar`
+    }));
+  });
+
+  it(`Reducer should return currentMovie`, () => {
+    expect(reducer(initialState, {
+      type: ActionType.UPDATE_CURRENT_MOVIE,
+      payload: 1
+    })).toEqual(Object.assign({}, initialState, {
+      currentMovie: films[1]
     }));
   });
 });

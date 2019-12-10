@@ -9,14 +9,14 @@ import MoviePlayer from "../movie-player/movie-player";
 import {MyList} from "../my-list/my-list";
 import {NotFound} from "../not-found/not-found";
 
-import withPrivateRoute from "../../hocs/with-private-route/with-private-route";
-import {withGetStore} from "../../hocs/with-get-store/with-get-store";
+import {withPrivateRoute} from "../../hocs/with-private-route/with-private-route";
 import {withMoviePlayer} from "../../hocs/with-movie-player/with-movie-player";
+import {withSessionStorage} from "../../hocs/with-session-storage/with-session-storage";
 
 const AddReviewPagePrivate = withPrivateRoute(AddReviewPage);
 const MyListPrivate = withPrivateRoute(MyList);
-const MoviePageWrapped = withGetStore(MoviePage, `movies`);
-const MoviePlayerWrapped = withMoviePlayer(MoviePlayer);
+const MoviePlayerWrapped = withMoviePlayer(withSessionStorage(MoviePlayer));
+const MoviePageWrapped = withSessionStorage(MoviePage);
 
 export const AppSettings = {
   MOVIES_INIT_LENGTH: 8,

@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 
 export const withGetStore = ((Component, stateKey) => {
   const WithGetStore = (props) => {
-    return <Component {...props} stateKey={props[stateKey]}/>;
+    return <Component {...props} />;
   };
 
   WithGetStore.propTypes = {

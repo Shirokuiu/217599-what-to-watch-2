@@ -9,8 +9,8 @@ import {withMoviePlayerProgress} from "../../hocs/with-movie-player-progress/wit
 const MoviePlayerProgressWrapped = withMoviePlayerProgress(MoviePlayerProgress);
 
 export const MoviePlayer = (props) => {
-  const {moviePlying, videoRef, onPlaySwitch, onFullScreen, isPlaying, history} = props;
-  const {name, videoLink, previewImage} = moviePlying;
+  const {currentMovie, videoRef, onPlaySwitch, onFullScreen, isPlaying, history} = props;
+  const {name, videoLink, previewImage} = currentMovie;
 
   const handleExitClick = () => {
     history.goBack();
@@ -88,7 +88,7 @@ export const MoviePlayer = (props) => {
 };
 
 MoviePlayer.propTypes = {
-  moviePlying: PropTypes.shape({
+  currentMovie: PropTypes.shape({
     name: PropTypes.string.isRequired,
     videoLink: PropTypes.string.isRequired,
     previewImage: PropTypes.string.isRequired,
@@ -100,12 +100,11 @@ MoviePlayer.propTypes = {
   isPlaying: PropTypes.bool.isRequired,
   history: PropTypes.object,
   onPlaySwitch: PropTypes.func.isRequired,
-  onClosePlayer: PropTypes.func.isRequired,
   onFullScreen: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  moviePlying: state.moviePlying
+  currentMovie: state.currentMovie
 });
 
 export default connect(mapStateToProps)(MoviePlayer);

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
 
-const withPrivateRoute = ((Component) => {
+export const withPrivateRoute = ((Component) => {
   const WithPrivateRoute = (props) => {
     const {isAuthorized} = props;
 
@@ -24,5 +24,3 @@ const withPrivateRoute = ((Component) => {
 
   return connect(mapStateToProps)(WithPrivateRoute);
 });
-
-export default withPrivateRoute;

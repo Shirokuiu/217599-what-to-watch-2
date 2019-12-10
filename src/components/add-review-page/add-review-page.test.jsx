@@ -11,13 +11,8 @@ Enzyme.configure({adapter: new Adapter()});
 
 it(`Is add review page rendered`, () => {
   const tree = shallow(<AddReviewPage
-    match={{
-      params: {
-        movieId: `1`
-      }
-    }}
+    currentMovie={films[0]}
     history={{}}
-    movies={films}
   />);
 
   expect(toJson(tree)).toMatchSnapshot();

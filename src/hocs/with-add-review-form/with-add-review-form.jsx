@@ -93,7 +93,7 @@ export const withAddReviewForm = (Component) => {
 
   WithAddReviewForm.propTypes = {
     onAddReview: PropTypes.func.isRequired,
-    movieId: PropTypes.string.isRequired,
+    movieId: PropTypes.number.isRequired,
     history: PropTypes.object.isRequired
   };
 
