@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Is my list movies rendered 1`] = `
+<section
+  className="catalog"
+>
+  <h2
+    className="catalog__title visually-hidden"
+  >
+    Catalog
+  </h2>
+  <div
+    className="catalog__movies-list"
+  >
+    <a
+      className="small-movie-card catalog__movies-card"
+      href="/movie/1/overview"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
+    >
+      <div
+        className="small-movie-card__image"
+      >
+        <video
+          height={175}
+          muted={true}
+          poster="img/the-grand-budapest-hotel.jpg"
+          src="https://some-link"
+          width={280}
+        />
+      </div>
+      <h3
+        className="small-movie-card__title"
+      >
+        <span
+          className="small-movie-card__link"
+        >
+          The Grand Budapest Hotel
+        </span>
+      </h3>
+    </a>
+  </div>
+</section>
+`;

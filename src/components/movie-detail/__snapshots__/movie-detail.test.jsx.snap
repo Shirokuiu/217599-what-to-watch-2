@@ -31,7 +31,29 @@ exports[`Is movie details rendered 1`] = `
       </strong>
       <span
         className="movie-card__details-value"
-      />
+      >
+        Bill Murray
+      </span>
+      <span
+        className="movie-card__details-value"
+      >
+        Edward Norton
+      </span>
+      <span
+        className="movie-card__details-value"
+      >
+        Jude Law
+      </span>
+      <span
+        className="movie-card__details-value"
+      >
+        Willem Dafoe
+      </span>
+      <span
+        className="movie-card__details-value"
+      >
+        Saoirse Ronan
+      </span>
     </p>
   </div>
   <div

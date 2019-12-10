@@ -2,12 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
-import {ActionCreator} from "../../reducer";
-
-import {Tab} from "../../mocks/mocks";
-
 export const GenreCatalogTab = (props) => {
-  const {onTabClick, genre} = props;
+  const {onTabClick, movies, activeTab} = props;
 
   const handleTabClick = (evt) => {
     const {target} = evt;
@@ -17,40 +13,70 @@ export const GenreCatalogTab = (props) => {
     onTabClick(target.textContent.toLowerCase());
   };
 
+  const makeGenres = (films) => {
+    return [...new Set(films.map(({genre}) => genre))].map((genre, idx) => ({
+      id: idx,
+      genre
+    }));
+  };
+
   return <ul className="catalog__genres-list">
-    {Tab.genreCatalog.map((tab, idx) => (
+    <li
+      className={
+        `All genres`.toLowerCase()
+          .includes(activeTab.toLowerCase()) ? `catalog__genres-item catalog__genres-item--active` : `catalog__genres-item`
+      }
+    >
+      <a
+        href="#"
+        className="catalog__genres-link"
+        onClick={handleTabClick}
+      >All genres</a>
+    </li>
+    {makeGenres(movies).map(({genre, id}) => (
       <li
-        key={tab + idx}
+        key={id}
         className={
           genre.toLowerCase()
-            .includes(tab.toLowerCase()) ? `catalog__genres-item catalog__genres-item--active` : `catalog__genres-item`
+            .includes(activeTab.toLowerCase()) ? `catalog__genres-item catalog__genres-item--active` : `catalog__genres-item`
         }
       >
         <a
           href="#"
           className="catalog__genres-link"
           onClick={handleTabClick}
-        >{tab}</a>
+        >{genre}</a>
       </li>
     ))}
   </ul>;
 };
 
 GenreCatalogTab.propTypes = {
-  genre: PropTypes.string.isRequired,
-  onTabClick: PropTypes.func.isRequired
+  activeTab: PropTypes.string.isRequired,
+  onTabClick: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    posterImage: PropTypes.string,
+    previewImage: PropTypes.string,
+    backgroundImage: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string,
+    previewVideoLink: PropTypes.string,
+    description: PropTypes.string,
+    rating: PropTypes.number,
+    scoresCount: PropTypes.number,
+    director: PropTypes.string,
+    starring: PropTypes.array.string,
+    runTime: PropTypes.number,
+    genre: PropTypes.string,
+    released: PropTypes.number,
+    isFavorite: PropTypes.bool,
+  })).isRequired
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  genre: state.movie.genreCatalog.genre
+  movies: state.movies
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onTabClick: (genre) => {
-    dispatch(ActionCreator.setGenre(genre));
-    dispatch(ActionCreator.filterMoviesByGenre(genre));
-    dispatch(ActionCreator.resetMoviesLoadedCount());
-  }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GenreCatalogTab);
+export default connect(mapStateToProps)(GenreCatalogTab);

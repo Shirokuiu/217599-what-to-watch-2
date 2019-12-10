@@ -1,95 +1,44 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
 import GenreCatalog from "../genre-catalog/genre-catalog";
+import MoviePromo from "../movie-promo/movie-promo";
+import {Footer} from "../footer/footer";
 
-export default class MainPage extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+import {Operation} from "../../reducer";
 
-  render() {
-    const {onMovieClick} = this.props;
+import {withGenreCatalog} from "../../hocs/with-genre-catalog/with-genre-catalog";
+import {withGetStore} from "../../hocs/with-get-store/with-get-store";
 
-    return <React.Fragment>
-      <section className="movie-card">
-        <div className="movie-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
-        </div>
+const GenreCatalogWrapped = withGenreCatalog(GenreCatalog);
+const MoviePromoWrapped = withGetStore(MoviePromo, `promo`);
 
-        <h1 className="visually-hidden">WTW</h1>
+export const MainPage = (props) => {
+  const {history, onLoadPromo} = props;
 
-        <header className="page-header movie-card__head">
-          <div className="logo">
-            <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+  onLoadPromo();
 
-          <div className="user-block">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-            </div>
-          </div>
-        </header>
+  return <React.Fragment>
+    <MoviePromoWrapped history={history} />
 
-        <div className="movie-card__wrap">
-          <div className="movie-card__info">
-            <div className="movie-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327"/>
-            </div>
+    <div className="page-content">
+      <GenreCatalogWrapped />
 
-            <div className="movie-card__desc">
-              <h2 className="movie-card__title">The Grand Budapest Hotel</h2>
-              <p className="movie-card__meta">
-                <span className="movie-card__genre">Drama</span>
-                <span className="movie-card__year">2014</span>
-              </p>
-
-              <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"/>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list movie-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="page-content">
-        <GenreCatalog
-          onMovieClick={onMovieClick}
-        />
-
-        <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
-      </div>
-    </React.Fragment>;
-  }
-}
+      <Footer />
+    </div>
+  </React.Fragment>;
+};
 
 MainPage.propTypes = {
-  onMovieClick: PropTypes.func.isRequired
+  history: PropTypes.object.isRequired,
+  onLoadPromo: PropTypes.func.isRequired
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  onLoadPromo: () => {
+    dispatch(Operation.loadPromo());
+  }
+});
+
+export default connect(null, mapDispatchToProps)(MainPage);

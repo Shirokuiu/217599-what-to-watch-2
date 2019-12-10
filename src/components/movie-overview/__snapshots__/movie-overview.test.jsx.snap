@@ -8,7 +8,7 @@ Array [
     <div
       className="movie-rating__score"
     >
-      8.7
+      8.9
     </div>
     <p
       className="movie-rating__meta"
@@ -16,12 +16,12 @@ Array [
       <span
         className="movie-rating__level"
       >
-        Very good
+        very good
       </span>
       <span
         className="movie-rating__count"
       >
-        100
+        240
          ratings
       </span>
     </p>
@@ -45,7 +45,7 @@ Array [
     >
       <strong>
         Starring: 
-        Bill Murray, Edward Norton, Jude Law, Willem Dafoe
+        Bill Murray, Edward Norton, Jude Law, Willem Dafoe, Saoirse Ronan
       </strong>
     </p>
   </div>,

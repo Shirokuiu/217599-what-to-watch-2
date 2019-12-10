@@ -4,19 +4,35 @@ import PropTypes from "prop-types";
 import {MovieList} from "../movie-list/movie-list";
 
 export const SimmilarMovie = (props) => {
-  const {mocks, onMovieClick, onMoviePageClick} = props;
+  const {simmilarMovies} = props;
 
   return <section className="catalog catalog--like-this">
     <h2 className="catalog__title">More like this</h2>
 
-    <MovieList films={mocks} onMovieClick={onMovieClick} onMoviePageClick={onMoviePageClick}/>
+    <MovieList movies={simmilarMovies}/>
   </section>;
 };
 
 SimmilarMovie.propTypes = {
-  mocks: PropTypes.array.isRequired,
-  onMovieClick: PropTypes.func.isRequired,
-  onMoviePageClick: PropTypes.func
+  simmilarMovies: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    posterImage: PropTypes.string,
+    previewImage: PropTypes.string,
+    backgroundImage: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string,
+    previewVideoLink: PropTypes.string,
+    description: PropTypes.string,
+    rating: PropTypes.number,
+    scoresCount: PropTypes.number,
+    director: PropTypes.string,
+    starring: PropTypes.array.string,
+    runTime: PropTypes.number,
+    genre: PropTypes.string,
+    released: PropTypes.number,
+    isFavorite: PropTypes.bool,
+  })).isRequired
 };
 
 

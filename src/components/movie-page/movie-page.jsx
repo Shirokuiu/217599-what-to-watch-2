@@ -1,101 +1,69 @@
-import React, {PureComponent} from "react";
+import React from "react";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {Route, Switch} from "react-router-dom";
 
-import MovieTabs from "../movie-tabs/movie-tabs";
-
+import MovieReviews from "../movie-review/movie-reviews";
+import MovieControls from "../movie-controls/movie-controls";
+import {Header} from "../header/header";
+import {MovieTabs} from "../movie-tabs/movie-tabs";
 import {SimmilarMovie} from "../simmilar-movie/simmilar-movie";
-import {NotFound} from "../not-found/not-found";
 import {MovieOverview} from "../movie-overview/movie-overview";
 import {MovieDetail} from "../movie-detail/movie-detail";
-import {MovieReview} from "../movie-review/movie-review";
+import {Footer} from "../footer/footer";
 
-export default class MoviePage extends PureComponent {
-  constructor(props) {
-    super(props);
+import {Operation} from "../../reducer";
 
-    this.state = {
-      activeTab: location.pathname.split(`-`).splice(-1)[0]
-    };
+import {withMovieControls} from "../../hocs/with-movie-controls/with-movie-controls";
 
-    this.handleTabClick = this.handleTabClick.bind(this);
-    this.handleMovieClick = this.handleMovieClick.bind(this);
-  }
+const MovieControlsWrapped = withMovieControls(MovieControls);
 
-  _getScreenOutlet(movie) {
-    const {movieId} = this.props;
+export const MoviePage = (props) => {
+  const PARENT_STATUS = `MOVIE_PAGE`;
 
-    switch (location.pathname) {
-      case `/movie-${movieId}-overview`:
-        return <MovieOverview movie={movie}/>;
-      case `/movie-${movieId}-details`:
-        return <MovieDetail />;
-      case `/movie-${movieId}-reviews`:
-        return <MovieReview />;
-    }
+  const {match, movies, isMoviesLoaded, history, onUpdateIsFavorite} = props;
+  const {movieId} = match.params;
+  const movie = movies[+movieId - 1];
+  let simmilarMovies = [];
 
-    return <NotFound />;
-  }
+  const getSimilarMovies = (films) => {
+    simmilarMovies = films.filter(({genre}) => genre === movie.genre).slice(0, 4)
+      .filter(({id}) => id !== +movieId);
+  };
 
-  handleTabClick(activeTab) {
-    this.setState({activeTab});
-  }
+  const handleFavoriteClick = () => {
+    onUpdateIsFavorite();
+  };
 
-  handleMovieClick() {
-    this.setState({activeTab: `overview`});
-  }
+  getSimilarMovies(movies);
 
-  render() {
-    const {movie, movieId, filmsMock, onMovieClick} = this.props;
-    const {img, title} = movie;
-
-    return <React.Fragment>
-      <section className="movie-card movie-card--full">
+  return <>
+    {isMoviesLoaded ? <>
+      <section className="movie-card movie-card--full" style={{background: movie.backgroundColor}}>
         <div className="movie-card__hero">
           <div className="movie-card__bg">
-            <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
+            <img src={movie.backgroundImage} alt={movie.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <header className="page-header movie-card__head">
-            <div className="logo">
-              <a href="main.html" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
-            </div>
-
-            <div className="user-block">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-              </div>
-            </div>
-          </header>
+          <Header />
 
           <div className="movie-card__wrap">
             <div className="movie-card__desc">
-              <h2 className="movie-card__title">{title}</h2>
+              <h2 className="movie-card__title">{movie.name}</h2>
               <p className="movie-card__meta">
-                <span className="movie-card__genre">Drama</span>
-                <span className="movie-card__year">2014</span>
+                <span className="movie-card__genre">{movie.genre}</span>
+                <span className="movie-card__year">{movie.released}</span>
               </p>
 
-              <div className="movie-card__buttons">
-                <button className="btn btn--play movie-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"/>
-                  </svg>
-                  <span>Play</span>
-                </button>
-                <button className="btn btn--list movie-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"/>
-                  </svg>
-                  <span>My list</span>
-                </button>
-                <a href="add-review.html" className="btn movie-card__button">Add review</a>
-              </div>
+              <MovieControlsWrapped
+                history={history}
+                parent={PARENT_STATUS}
+                movieId={+movieId - 1}
+                favorite={movie.isFavorite}
+                onFavoriteClick={handleFavoriteClick}
+              />
             </div>
           </div>
         </div>
@@ -103,44 +71,81 @@ export default class MoviePage extends PureComponent {
         <div className="movie-card__wrap movie-card__translate-top">
           <div className="movie-card__info">
             <div className="movie-card__poster movie-card__poster--big">
-              <img src={`img/${img}`} alt={title} width="218" height="327"/>
+              <img src={movie.posterImage} alt={movie.name} width="218" height="327"/>
             </div>
 
             <div className="movie-card__desc">
-              <MovieTabs movieId={movieId} onTabClick={this.handleTabClick} activeTab={this.state.activeTab}/>
-              {this._getScreenOutlet(movie)}
+              <MovieTabs id={+movieId}/>
+              <Switch>
+                <Route
+                  path={`/movie/${movieId}/overview`}
+                  render={(prop) => <MovieOverview {...prop} movie={movie} />}
+                  exact
+                />
+                <Route
+                  path={`/movie/${movieId}/details`}
+                  render={(prop) => <MovieDetail {...prop} movie={movie} />}
+                  exact
+                />
+                <Route
+                  path={`/movie/${movieId}/reviews`}
+                  render={(prop) => <MovieReviews {...prop} movieId={+movieId}/>}
+                  exact
+                />
+              </Switch>
             </div>
           </div>
         </div>
       </section>
       <div className="page-content">
 
-        <SimmilarMovie mocks={filmsMock} onMovieClick={onMovieClick} onMoviePageClick={this.handleMovieClick}/>
+        {simmilarMovies.length ? <SimmilarMovie simmilarMovies={simmilarMovies}/> : null}
 
-        <footer className="page-footer">
-          <div className="logo">
-            <a href="main.html" className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
-
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
-    </React.Fragment>;
-  }
-}
+    </> : null}
+  </>;
+};
 
 MoviePage.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string,
-    img: PropTypes.string
-  }).isRequired,
-  filmsMock: PropTypes.array.isRequired,
-  onMovieClick: PropTypes.func.isRequired,
-  movieId: PropTypes.number.isRequired
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      movieId: PropTypes.string
+    })
+  }),
+  movies: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    posterImage: PropTypes.string,
+    previewImage: PropTypes.string,
+    backgroundImage: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string,
+    previewVideoLink: PropTypes.string,
+    description: PropTypes.string,
+    rating: PropTypes.number,
+    scoresCount: PropTypes.number,
+    director: PropTypes.string,
+    starring: PropTypes.array.string,
+    runTime: PropTypes.number,
+    genre: PropTypes.string,
+    released: PropTypes.number,
+    isFavorite: PropTypes.bool,
+  })).isRequired,
+  isMoviesLoaded: PropTypes.bool.isRequired,
+  history: PropTypes.object.isRequired,
+  onUpdateIsFavorite: PropTypes.func
 };
+
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  isMoviesLoaded: state.isMoviesLoaded
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onUpdateIsFavorite: () => {
+    dispatch(Operation.loadMovies());
+    dispatch(Operation.loadPromo());
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MoviePage);

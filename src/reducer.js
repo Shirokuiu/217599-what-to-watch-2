@@ -1,109 +1,166 @@
-import {films} from "./mocks/mocks";
+import FilmModel from "./models/film-model";
+import CommentModel from "./models/comment-model";
 
-export const AppSettings = {
-  MOVIES_INIT_LENGTH: 8,
-  MOVIES_TO_LOAD: 20
-};
-
-export const getMoviesByGenre = (movieGenre) => {
-  const movieLowerCase = movieGenre.toLowerCase();
-  const genreLowerCase = initialState.movie.genreCatalog.genre.toLowerCase();
-
-  return movieLowerCase !== genreLowerCase ?
-    films.slice().filter(({genre}) => genre.toLowerCase().includes(movieLowerCase)).slice(0, AppSettings.MOVIES_TO_LOAD) :
-    films.slice(0, AppSettings.MOVIES_TO_LOAD);
-};
-
-export const getLoadedMovies = (step) => {
-  if (films.length >= step) {
-    return films.slice(0, step);
-  }
-
-  return films;
+export const initialState = {
+  movies: [],
+  promo: {},
+  comments: [],
+  moviesFavorite: [],
+  moviePlying: {},
+  isAuthorized: false,
+  isMoviesLoaded: false,
+  avatar: undefined
 };
 
 export const ActionType = {
-  SET_GENRE: `SET_GENRE`,
-  FILTER_MOVIES_BY_GENRE: `FILTER_MOVIES_BY_GENRE`,
-  UPDATE_MOVIES_LOADED_COUNT: `UPDATE_MOVIES_LOADED_COUNT`,
-  RESET_MOVIES_LOADED_COUNT: `RESET_MOVIES_LOADED_COUNT`,
-  LOAD_MORE_MOVIES: `LOAD_MORE_MOVIES`
+  LOAD_MOVIES: `LOAD_MOVIES`,
+  LOAD_PROMO: `LOAD_PROMO`,
+  LOAD_COMMENTS: `LOAD_COMMENTS`,
+  LOAD_FAVORITE_MOVIES: `LOAD_FAVORITE_MOVIES`,
+  CHECK_AUTHORIZATION: `CHECK_AUTHORIZATION`,
+  CHECK_LOADED_MOVIES: `CHECK_LOADED_MOVIES`,
+  GET_AVATAR: `GET_AVATAR`,
+  GET_PLAYING_MOVIE: `GET_PLAYING_MOVIE`
+};
+
+export const Operation = {
+  loadMovies: () => (dispatch, _, api) => {
+    return api.get(`/films`)
+      .then(({data}) => {
+        dispatch(ActionCreator.loadMovies(data));
+        dispatch(ActionCreator.checkLoadedMovies(true));
+      })
+      .catch(() => {
+        dispatch(ActionCreator.checkLoadedMovies(false));
+      });
+  },
+  loadPromo: () => (dispatch, _, api) => {
+    return api.get(`/films/promo`)
+      .then(({data}) => {
+        dispatch(ActionCreator.loadPromo(data));
+      });
+  },
+  loadComments: (movieId) => (dispatch, _, api) => {
+    return api.get(`/comments/${movieId}`)
+      .then(({data}) => {
+        dispatch(ActionCreator.loadComments(data));
+      });
+  },
+  loadFavoriteMovies: () => (dispatch, _, api) => {
+    return api.get(`/favorite`)
+      .then(({data}) => {
+        dispatch(ActionCreator.loadFavoriteMovies(data));
+      });
+  },
+  addReview: (movieId, body, cb) => (dispatch, _, api) => {
+    let error = false;
+    return api.post(`/comments/${movieId}`, body)
+      .then(({data}) => {
+        error = false;
+        cb(error);
+        dispatch(ActionCreator.loadComments(data));
+      })
+      .catch(() => {
+        error = true;
+        cb(error);
+      });
+  },
+  switchFavorite: (movieId, status, cb) => (dispatch, _, api) => {
+    return api.post(`/favorite/${movieId}/${status}`)
+      .then(() => {
+        cb();
+      });
+  },
+  logIn: (body) => (dispatch, _, api) => {
+    return api.post(`/login`, body)
+      .then(({data}) => {
+        dispatch(ActionCreator.checkAuthorization(true));
+        dispatch(ActionCreator.getAvatar(data.avatar_url));
+      })
+      .catch(() => {
+        dispatch(ActionCreator.checkAuthorization(false));
+      });
+  },
+  checkAuthorization: () => (dispatch, _, api) => {
+    return api.get(`/login`)
+      .then(({data}) => {
+        dispatch(ActionCreator.checkAuthorization(true));
+        dispatch(ActionCreator.getAvatar(data.avatar_url));
+      })
+      .catch(() => {
+        dispatch(ActionCreator.checkAuthorization(false));
+      });
+  }
 };
 
 export const ActionCreator = {
-  setGenre: (genre) => ({
-    type: ActionType.SET_GENRE,
-    payload: genre
+  loadMovies: (movies) => ({
+    type: ActionType.LOAD_MOVIES,
+    payload: movies
   }),
-  filterMoviesByGenre: (genre) => ({
-    type: ActionType.FILTER_MOVIES_BY_GENRE,
-    payload: getMoviesByGenre(genre)
+  loadPromo: (promo) => ({
+    type: ActionType.LOAD_PROMO,
+    payload: promo
   }),
-  updateMoviesLoadedCount: () => ({
-    type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
-    payload: AppSettings.MOVIES_TO_LOAD
+  loadComments: (comments) => ({
+    type: ActionType.LOAD_COMMENTS,
+    payload: comments
   }),
-  resetMoviesLoadedCount: () => ({
-    type: ActionType.RESET_MOVIES_LOADED_COUNT,
-    payload: AppSettings.MOVIES_INIT_LENGTH
+  loadFavoriteMovies: (movies) => ({
+    type: ActionType.LOAD_FAVORITE_MOVIES,
+    payload: movies
   }),
-  loadMoreMovies: (stepCount) => ({
-    type: ActionType.LOAD_MORE_MOVIES,
-    payload: getLoadedMovies(stepCount + AppSettings.MOVIES_TO_LOAD)
+  checkAuthorization: (isAuth) => ({
+    type: ActionType.CHECK_AUTHORIZATION,
+    payload: isAuth
+  }),
+  checkLoadedMovies: (isLoaded) => ({
+    type: ActionType.CHECK_LOADED_MOVIES,
+    payload: isLoaded
+  }),
+  getAvatar: (avatarUrl) => ({
+    type: ActionType.GET_AVATAR,
+    payload: avatarUrl
+  }),
+  getPlayingMovie: (movieId) => ({
+    type: ActionType.GET_PLAYING_MOVIE,
+    payload: movieId
   })
-};
-
-export const initialState = {
-  movie: {
-    genreCatalog: {
-      genre: `All genres`,
-      movies: films.slice(0, AppSettings.MOVIES_INIT_LENGTH),
-      moviesLoadedCount: AppSettings.MOVIES_INIT_LENGTH
-    }
-  },
 };
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.SET_GENRE:
+    case ActionType.LOAD_MOVIES:
       return Object.assign({}, state, {
-        movie: {
-          genreCatalog: Object.assign({}, state.movie.genreCatalog, {
-            genre: action.payload
-          })
-        }
+        movies: FilmModel.parseFilms(action.payload)
       });
-    case ActionType.FILTER_MOVIES_BY_GENRE:
+    case ActionType.LOAD_PROMO:
       return Object.assign({}, state, {
-        movie: {
-          genreCatalog: Object.assign({}, state.movie.genreCatalog, {
-            movies: action.payload
-          })
-        }
+        promo: FilmModel.parseFilm(action.payload)
       });
-    case ActionType.UPDATE_MOVIES_LOADED_COUNT:
+    case ActionType.LOAD_COMMENTS:
       return Object.assign({}, state, {
-        movie: {
-          genreCatalog: Object.assign({}, state.movie.genreCatalog, {
-            moviesLoadedCount: state.movie.genreCatalog.moviesLoadedCount + action.payload
-          })
-        }
+        comments: CommentModel.parseComments(action.payload)
       });
-    case ActionType.RESET_MOVIES_LOADED_COUNT:
+    case ActionType.LOAD_FAVORITE_MOVIES:
       return Object.assign({}, state, {
-        movie: {
-          genreCatalog: Object.assign({}, state.movie.genreCatalog, {
-            moviesLoadedCount: action.payload
-          })
-        }
+        moviesFavorite: FilmModel.parseFilms(action.payload)
       });
-    case ActionType.LOAD_MORE_MOVIES:
+    case ActionType.CHECK_AUTHORIZATION:
       return Object.assign({}, state, {
-        movie: {
-          genreCatalog: Object.assign({}, state.movie.genreCatalog, {
-            movies: action.payload
-          })
-        }
+        isAuthorized: action.payload
+      });
+    case ActionType.CHECK_LOADED_MOVIES:
+      return Object.assign({}, state, {
+        isMoviesLoaded: action.payload
+      });
+    case ActionType.GET_AVATAR:
+      return Object.assign({}, state, {
+        avatar: action.payload
+      });
+    case ActionType.GET_PLAYING_MOVIE:
+      return Object.assign({}, state, {
+        moviePlying: state.movies[action.payload]
       });
   }
   return state;

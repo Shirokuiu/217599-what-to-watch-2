@@ -1,14 +1,15 @@
 import React from "react";
 import renderer from "react-test-renderer";
+import {BrowserRouter} from "react-router-dom";
 
-import MovieTabs from "./movie-tabs";
+import {MovieTabs} from "./movie-tabs";
 
 it(`Is movie tabs rendered`, () => {
-  const tree = renderer.create(<MovieTabs
-    movieId={0}
-    onTabClick={jest.fn()}
-    activeTab={`details`}
-  />).toJSON();
+  const tree = renderer.create(<BrowserRouter>
+    <MovieTabs
+      id={0}
+    />
+  </BrowserRouter>).toJSON();
 
   expect(tree).toMatchSnapshot();
 });

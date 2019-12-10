@@ -1,142 +1,117 @@
+import MockAdapter from "axios-mock-adapter";
+
 import {
-  ActionCreator,
   ActionType,
-  AppSettings,
-  getLoadedMovies,
-  getMoviesByGenre,
-  initialState,
+  initialState, Operation,
   reducer
 } from "./reducer";
+import {createAPI} from "./api";
 
-import {films} from "./mocks/mocks";
+import FilmModel from "./models/film-model";
 
 describe(`Reducers works correctly`, () => {
+  const dispatch = jest.fn();
+  const api = createAPI(dispatch);
+  const apiMock = new MockAdapter(api);
+  const moviesLoader = Operation.loadMovies();
+  const promoLoader = Operation.loadPromo();
+  const commentsLoader = Operation.loadComments(1);
+  const checkLoginLoader = Operation.checkAuthorization();
+
   it(`Reducer without additional parameters return initial state`, () => {
     expect(reducer(
         undefined,
         {}))
-      .toEqual(initialState);
+        .toEqual(initialState);
   });
 
-  it(`Reducer should set genre by a given value`, () => {
-    expect(reducer(Object.assign({}, initialState), {
-      type: ActionType.SET_GENRE,
-      payload: `comedies`
-    })).toEqual(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          genre: `comedies`
-        })
-      }
-    }));
-  });
+  it(`Reducer should make correct API call to /films`, () => {
+    apiMock
+      .onGet(`/films`)
+      .reply(200, FilmModel.parseFilms([{fake: true}]));
 
-  it(`Reducer should return filtered movies`, () => {
-    expect(reducer(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          genre: `Comedies`,
-          movies: getMoviesByGenre(`Comedies`)
-        })
-      }
-    }), {
-      type: ActionType.FILTER_MOVIES_BY_GENRE,
-      payload: getMoviesByGenre(`Comedies`)
-    })).toEqual(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          genre: `Comedies`,
-          movies: films.filter(({genre}) => genre.includes(`Comedies`))
-        })
-      }
-    }));
-  });
-
-  it(`Reducer should update movies by loaded count`, () => {
-    expect(reducer(Object.assign({}, initialState), {
-      type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
-      payload: AppSettings.MOVIES_TO_LOAD
-    })).toEqual(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          moviesLoadedCount: AppSettings.MOVIES_INIT_LENGTH + AppSettings.MOVIES_TO_LOAD
-        })
-      }
-    }));
-  });
-
-  it(`Reducer should reset movies by loaded count by a given value`, () => {
-    expect(reducer(Object.assign({}, initialState), {
-      type: ActionType.RESET_MOVIES_LOADED_COUNT,
-      payload: AppSettings.MOVIES_TO_LOAD
-    })).toEqual(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          moviesLoadedCount: AppSettings.MOVIES_TO_LOAD
-        })
-      }
-    }));
-  });
-
-  it(`Reducer should return new loaded movies`, () => {
-    expect(reducer(Object.assign({}, initialState), {
-      type: ActionType.LOAD_MORE_MOVIES,
-      payload: getLoadedMovies(AppSettings.MOVIES_INIT_LENGTH)
-    })).toEqual(Object.assign({}, initialState, {
-      movie: {
-        genreCatalog: Object.assign({}, initialState.movie.genreCatalog, {
-          movies: films.slice(0, AppSettings.MOVIES_INIT_LENGTH)
-        })
-      }
-    }));
-  });
-});
-
-describe(`Action creator works correctly`, () => {
-  it(`Action creator set genre by a given value`, () => {
-    expect(ActionCreator.setGenre(`comedies`))
-      .toEqual({
-        type: ActionType.SET_GENRE,
-        payload: `comedies`
+    return moviesLoader(dispatch, jest.fn(), api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith({
+          type: ActionType.LOAD_MOVIES,
+          payload: FilmModel.parseFilms([{fake: true}])
+        });
       });
   });
 
-  it(`Action creator filter movies by a given value`, () => {
-    expect(ActionCreator.filterMoviesByGenre(`Comedies`))
-      .toEqual({
-        type: ActionType.FILTER_MOVIES_BY_GENRE,
-        payload: getMoviesByGenre(`Comedies`)
+  it(`Reducer should make correct API call to /films/promo`, () => {
+    apiMock
+      .onGet(`/films/promo`)
+      .reply(200, FilmModel.parseFilm([{fake: true}]));
+
+    return promoLoader(dispatch, jest.fn(), api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith({
+          type: ActionType.LOAD_PROMO,
+          payload: FilmModel.parseFilm([{fake: true}])
+        });
       });
   });
 
-  it(`Action creator update movies loaded count by a given value for app settings`, () => {
-    expect(ActionCreator.updateMoviesLoadedCount()).toEqual({
-      type: ActionType.UPDATE_MOVIES_LOADED_COUNT,
-      payload: AppSettings.MOVIES_TO_LOAD
-    });
+  it(`Reducer should make correct API call to /comments/:movieId`, () => {
+    apiMock
+      .onGet(`/comments/1`)
+      .reply(200, [{fake: `true`}]);
+
+    return commentsLoader(dispatch, {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith({
+          type: ActionType.LOAD_COMMENTS,
+          payload: [{fake: `true`}]
+        });
+      });
   });
 
-  it(`Action creator reset movies loaded count`, () => {
-    expect(ActionCreator.resetMoviesLoadedCount()).toEqual({
-      type: ActionType.RESET_MOVIES_LOADED_COUNT,
-      payload: AppSettings.MOVIES_INIT_LENGTH
-    });
+  it(`Reducer should make correct API call to /favorite`, () => {
+    apiMock
+      .onGet(`//favorite`)
+      .reply(200, [{fake: `true`}]);
+
+    return commentsLoader(dispatch, {}, api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalled();
+      });
   });
 
-  it(`Action creator return loaded movies by a given value`, () => {
-    expect(ActionCreator.loadMoreMovies(AppSettings.MOVIES_INIT_LENGTH)).toEqual({
-      type: ActionType.LOAD_MORE_MOVIES,
-      payload: films.slice(0, AppSettings.MOVIES_INIT_LENGTH + AppSettings.MOVIES_TO_LOAD)
-    });
+  it(`Reducer should make correct API call to /login`, () => {
+    apiMock
+      .onGet(`/login`)
+      .reply(200);
+
+    return checkLoginLoader(dispatch, jest.fn(), api)
+      .then(() => {
+        expect(dispatch).toHaveBeenCalled();
+        expect(dispatch).toHaveBeenCalledWith({
+          type: ActionType.CHECK_AUTHORIZATION,
+          payload: true
+        });
+      });
+  });
+
+  it(`Reducer should return loaded movies status`, () => {
+    expect(reducer(initialState, {
+      type: ActionType.CHECK_LOADED_MOVIES,
+      payload: false
+    })).toEqual(Object.assign({}, initialState, {
+      isMoviesLoaded: false
+    }));
+  });
+
+  it(`Reducer should return avatar url`, () => {
+    expect(reducer(initialState, {
+      type: ActionType.GET_AVATAR,
+      payload: `avatar`
+    })).toEqual(Object.assign({}, initialState, {
+      avatar: `avatar`
+    }));
   });
 });
 
-describe(`Function - getMoviesByGenre, correctly works`, () => {
-  it(`Function - getMoviesByGenre should return movies by a given parameter - All genres`, () => {
-    expect(getMoviesByGenre(`All genres`)).toEqual(films.slice(0, AppSettings.MOVIES_TO_LOAD));
-  });
-
-  it(`Function - getMoviesByGenre should return movies by a given parameter is - Comedies`, () => {
-    expect(getMoviesByGenre(`Comedies`)).toEqual(getMoviesByGenre(`Comedies`));
-  });
-});

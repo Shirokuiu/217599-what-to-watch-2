@@ -1,32 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 
 import VideoPlayer from "../video-player/video-player";
 
 export const Movie = (props) => {
-  const {film, id, onMovieEnter, onMovieLeave, onMovieClick, onMoviePageClick, isPlaying} = props;
-  const {img, title, preview} = film;
+  const {movie, onMovieEnter, onMovieLeave, isPlaying} = props;
+  const {previewImage, name, previewVideoLink, id} = movie;
 
-  const handleMovieClick = (evt) => {
-    evt.preventDefault();
-
-    onMovieClick(id);
-    if (onMoviePageClick) {
-      onMoviePageClick();
-    }
-    history.pushState(null, null, `/movie-${id}-overview`);
-  };
-
-  return <article
+  return <Link
+    to={`/movie/${id}/overview`}
     className="small-movie-card catalog__movies-card"
-    onClick={handleMovieClick}
     onMouseEnter={onMovieEnter}
     onMouseLeave={onMovieLeave}
   >
     <div className="small-movie-card__image">
       <VideoPlayer
-        src={preview}
-        poster={`img/${img}`}
+        src={previewVideoLink}
+        poster={previewImage}
         muted={true}
         width={280}
         height={175}
@@ -34,20 +25,31 @@ export const Movie = (props) => {
       />
     </div>
     <h3 className="small-movie-card__title">
-      <a className="small-movie-card__link" href={`/movie-${id}-overview`}>{title}</a>
+      <span className="small-movie-card__link">{name}</span>
     </h3>
-  </article>;
+  </Link>;
 };
 
 Movie.propTypes = {
-  film: PropTypes.shape({
-    img: PropTypes.string,
-    title: PropTypes.string,
-    preview: PropTypes.string
+  movie: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    posterImage: PropTypes.string,
+    previewImage: PropTypes.string,
+    backgroundImage: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    videoLink: PropTypes.string,
+    previewVideoLink: PropTypes.string,
+    description: PropTypes.string,
+    rating: PropTypes.number,
+    scoresCount: PropTypes.number,
+    director: PropTypes.string,
+    starring: PropTypes.array.string,
+    runTime: PropTypes.number,
+    genre: PropTypes.string,
+    released: PropTypes.number,
+    isFavorite: PropTypes.bool,
   }).isRequired,
-  id: PropTypes.number.isRequired,
-  onMovieClick: PropTypes.func.isRequired,
-  onMoviePageClick: PropTypes.func,
   onMovieEnter: PropTypes.func,
   onMovieLeave: PropTypes.func,
   isPlaying: PropTypes.bool

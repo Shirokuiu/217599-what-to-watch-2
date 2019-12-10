@@ -4,12 +4,15 @@ import Adapter from "enzyme-adapter-react-16";
 
 import {GenreCatalogTab} from "./genre-catalog-tab";
 
+import {films} from "../../mocks/mocks";
+
 Enzyme.configure({adapter: new Adapter()});
 
 it(`Is tab clicked`, () => {
   const clickHandler = jest.fn();
   const genreCatalogTab = shallow(<GenreCatalogTab
-    genre={``}
+    movies={films}
+    activeTab={`All genres`}
     onTabClick={clickHandler}
   />);
 
