@@ -26,7 +26,7 @@ export const withAddReviewForm = (Component) => {
 
       this.handleRateChange = this.handleRateChange.bind(this);
       this.handleTextareaChange = this.handleTextareaChange.bind(this);
-      this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
     handleRateChange(evt) {
@@ -41,7 +41,7 @@ export const withAddReviewForm = (Component) => {
       this.formState.textarea.value = value.trim().replace(/\s+/g, ` `);
     }
 
-    handleSubmit(evt) {
+    handleFormSubmit(evt) {
       evt.preventDefault();
 
       if (this.formState.textarea.value === ``) {
@@ -86,7 +86,7 @@ export const withAddReviewForm = (Component) => {
         state={this.state}
         onRateChange={this.handleRateChange}
         onTextareaChange={this.handleTextareaChange}
-        onSubmit={this.handleSubmit}
+        onSubmit={this.handleFormSubmit}
       />;
     }
   }
