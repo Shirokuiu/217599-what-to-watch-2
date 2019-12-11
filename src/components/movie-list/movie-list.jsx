@@ -34,7 +34,7 @@ MovieList.propTypes = {
     rating: PropTypes.number,
     scoresCount: PropTypes.number,
     director: PropTypes.string,
-    starring: PropTypes.array.string,
+    starrings: PropTypes.array.string,
     runTime: PropTypes.number,
     genre: PropTypes.string,
     released: PropTypes.number,

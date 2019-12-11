@@ -36,7 +36,7 @@ export const MovieOverview = (props) => {
 
       <p className="movie-card__director"><strong>Director: {movie.director}</strong></p>
 
-      <p className="movie-card__starring"><strong>Starring: {movie.starring.map((starring) => starring).join(`, `)}</strong></p>
+      <p className="movie-card__starring"><strong>Starring: {movie.starrings.map((starring) => starring).join(`, `)}</strong></p>
     </div>
   </React.Fragment>;
 };
@@ -55,7 +55,7 @@ MovieOverview.propTypes = {
     rating: PropTypes.number,
     scoresCount: PropTypes.number,
     director: PropTypes.string,
-    starring: PropTypes.array.string,
+    starrings: PropTypes.array.string,
     runTime: PropTypes.number,
     genre: PropTypes.string,
     released: PropTypes.number,

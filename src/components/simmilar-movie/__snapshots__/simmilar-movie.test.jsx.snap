@@ -42,7 +42,7 @@ exports[`Is simmilar movie rendered 1`] = `
           "released": 2014,
           "runTime": 99,
           "scoresCount": 240,
-          "starring": Array [
+          "starrings": Array [
             "Bill Murray",
             "Edward Norton",
             "Jude Law",

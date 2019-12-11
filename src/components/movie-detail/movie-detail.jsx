@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const MovieDetail = (props) => {
   const {movie} = props;
-  const {director, starring, runTime, genre, released} = movie;
+  const {director, starrings, runTime, genre, released} = movie;
 
   const getTimeFromMinutes = (mins) => {
     let hours = Math.trunc(mins / 60);
@@ -19,7 +19,7 @@ export const MovieDetail = (props) => {
       </p>
       <p className="movie-card__details-item">
         <strong className="movie-card__details-name">Starring</strong>
-        {starring.map((name, idx) => <span key={idx + starring} className="movie-card__details-value">{name}</span>)}
+        {starrings.map((name, idx) => <span key={idx + name} className="movie-card__details-value">{name}</span>)}
       </p>
     </div>
 
@@ -54,7 +54,7 @@ MovieDetail.propTypes = {
     rating: PropTypes.number,
     scoresCount: PropTypes.number,
     director: PropTypes.string,
-    starring: PropTypes.array.string,
+    starrings: PropTypes.array.string,
     runTime: PropTypes.number,
     genre: PropTypes.string,
     released: PropTypes.number,

@@ -9,7 +9,7 @@ export const MovieTabs = (props) => {
 
   return <nav className="movie-nav movie-card__nav">
     <ul className="movie-nav__list">
-      {Tab.moviePage.map((tab, idx) => (
+      {Tab.tabs.map((tab, idx) => (
         <NavLink
           to={`/movie/${id}/${tab.toLowerCase()}`}
           activeClassName='movie-nav__item--active'

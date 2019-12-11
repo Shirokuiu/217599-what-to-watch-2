@@ -12,7 +12,7 @@ export default class FilmModel {
     this.rating = data[`rating`];
     this.scoresCount = data[`scores_count`];
     this.director = data[`director`];
-    this.starring = data[`starring`];
+    this.starrings = data[`starring`];
     this.runTime = data[`run_time`];
     this.genre = data[`genre`];
     this.released = data[`released`];
